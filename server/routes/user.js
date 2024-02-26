@@ -3,6 +3,7 @@ const zod = require("zod");
 const jwt = require("jsonwebtoken");
 import { authMiddleWare } from "../middleware/auth";
 import { User } from "../models/user";
+import { Account } from "../models/account";
 require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -30,6 +31,12 @@ router.post("/signup", async (req, res) => {
     });
   }
   const dbUser = await User.create(body);
+  const userId = dbUser._id;
+  await Account.create({
+    userId,
+    balance: 1 + Math.random() * 100000,
+  });
+
   const token = jwt.sign({
     userId: jwt.sign(
       {
