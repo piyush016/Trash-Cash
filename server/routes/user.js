@@ -1,50 +1,51 @@
 const express = require("express");
+const router = express.Router();
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
-import { authMiddleWare } from "../middleware/auth";
-import { User } from "../models/user";
-import { Account } from "../models/account";
+const { authMiddleWare } = require("../middleware/auth");
+const { User } = require("../models/user");
+const { Account } = require("../models/account");
 require("dotenv").config();
-const JWT_SECRET = process.env.JWT_SECRET;
-
-const router = express.Router();
 
 const signupSchema = zod.object({
   username: zod.string().email(),
-  password: zod.string(),
+  lastName: zod.string(),
   firstName: zod.string(),
   password: zod.string(),
 });
 router.post("/signup", async (req, res) => {
-  const body = req.body;
   const { success } = signupSchema.safeParse(req.body);
   if (!success) {
     return res.status(400).json({ message: "Invalid request" });
   }
   const user = User.findOne({
-    usrename: body.username,
+    usrename: req.body.username,
   });
 
   if (user._id) {
-    return res.json({
+    return res.status(400).json({
       message: "User already exists",
     });
   }
-  const dbUser = await User.create(body);
+  const dbUser = await User.create({
+    username: req.body.username,
+    password: req.body.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+  });
   const userId = dbUser._id;
   await Account.create({
     userId,
     balance: 1 + Math.random() * 100000,
   });
 
-  const token = jwt.sign({
-    userId: jwt.sign(
-      {
-        userId: dbUser._id,
-      },
-      JWT_SECRET
-    ),
-  });
+  const token = jwt.sign(
+    {
+      userId: dbUser._id,
+    },
+    process.env.JWT_SECRET
+  );
+
   res.json({
     message: "User created successfully",
     token: token,
@@ -65,12 +66,14 @@ router.post("/signin", async (req, res) => {
     password: req.body.password,
   });
   if (user) {
-    const token = jwt.sign(
-      {
-        userId: user._id,
-      },
-      JWT_SECRET
-    );
+    const token = jwt.sign({
+      userId: jwt.sign(
+        {
+          userId: user._id,
+        },
+        process.env.JWT_SECRET
+      ),
+    });
     res.json({
       token: token,
     });
@@ -98,7 +101,7 @@ router.put("/update-profile", authMiddleWare, async (req, res) => {
   });
 });
 
-router.get("/search-user", async (req, res) => {
+router.get("/search-user", authMiddleWare, async (req, res) => {
   const filter = req.query.filter || "";
 
   const users = await User.find({
