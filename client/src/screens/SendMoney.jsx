@@ -1,64 +1,132 @@
 import { useState } from "react";
-import { Card, Input, Button, Typography } from "antd";
-import { UserOutlined, DollarCircleOutlined } from "@ant-design/icons";
+import { Card, Input, Button, Typography, Avatar, Modal } from "antd";
+import {
+  DollarCircleOutlined,
+  CheckCircleOutlined,
+  FrownOutlined,
+} from "@ant-design/icons";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import SecurityModal from "../components/SecurityModal";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const SendMoney = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const apiURL = process.env.API_URL;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const firstName = searchParams.get("firstName");
   const [amount, setAmount] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [failureModalVisible, setFailureModalVisible] = useState(false);
 
-  const handleSearch = (value) => {
-    setSearchValue(value);
-    // Perform search logic here, e.g., fetch users matching the search value
+  const handleSubmit = async () => {
+    if (parseInt(amount) < 1 || isNaN(parseInt(amount))) {
+      return;
+    }
+    setModalVisible(true);
   };
 
-  const handleSubmit = () => {
-    // Handle form submission, e.g., send money to the selected user
-    console.log("Send money to:", searchValue, "Amount:", amount);
-    // Clear form fields after submission
-    setSearchValue("");
-    setAmount("");
+  const handleSuccessVerification = async () => {
+    try {
+      const response = await axios.post(
+        `${apiURL}/account/transfer`,
+        {
+          to: id,
+          amount: parseInt(amount),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setModalVisible(false);
+      setSuccessModalVisible(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 5000);
+    } catch (error) {
+      console.error("Error sending money:", error);
+      setModalVisible(false);
+      setFailureModalVisible(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 5000);
+    }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <Title level={3} style={{ textAlign: "center", marginBottom: "24px" }}>
-        Send Money
-      </Title>
-      <Card bordered={false}>
-        <div style={{ marginBottom: "24px" }}>
-          <Input.Search
-            placeholder='Enter username or name'
-            value={searchValue}
-            onChange={(e) => handleSearch(e.target.value)}
-            onSearch={handleSubmit}
-            prefix={<UserOutlined />}
-          />
+    <div className='flex justify-center items-center h-screen bg-gray-100'>
+      <Card className='w-96 p-8 h-80vh'>
+        <div className='text-center mb-6'>
+          <Avatar style={{ backgroundColor: "#f56a00" }} size={50}>
+            {firstName && firstName.charAt(0).toUpperCase()}
+          </Avatar>
+          <Title level={3} className='mt-3 mb-0 text-xl font-bold'>
+            Sending Money to {firstName}
+          </Title>
         </div>
-        <div style={{ marginBottom: "24px" }}>
+        <Paragraph className='mb-6'>
+          Please enter the amount you wish to send to {firstName}. Make sure to
+          double-check the details before proceeding with the transaction.
+        </Paragraph>
+        <div className='mb-6'>
           <Input
             type='number'
             placeholder='Amount (Rs)'
-            controls={false}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             prefix={<DollarCircleOutlined />}
             addonAfter='Rs'
+            className='text-lg'
           />
         </div>
         <Button
           type='primary'
           onClick={handleSubmit}
-          style={{
-            width: "100%",
-            backgroundColor: "green",
-            borderColor: "green",
-          }}
+          className='w-full'
+          style={{ backgroundColor: "green", borderColor: "green" }}
         >
           Send Money
         </Button>
+        {parseInt(amount) < 1 && (
+          <p className='text-red-500 text-sm mt-2'>
+            Please enter a valid amount (greater than or equal to 1).
+          </p>
+        )}
       </Card>
+      <SecurityModal
+        visible={modalVisible}
+        onSuccess={handleSuccessVerification}
+        onCancel={() => setModalVisible(false)}
+      />
+      <Modal
+        visible={successModalVisible}
+        closable={false}
+        footer={null}
+        onCancel={() => setSuccessModalVisible(false)}
+      >
+        <div style={{ textAlign: "center" }}>
+          <CheckCircleOutlined style={{ fontSize: "48px", color: "green" }} />
+          <Title level={4}>Money Sent Successfully!</Title>
+          <Paragraph>We hope it reaches {firstName} safely! 🚀</Paragraph>
+        </div>
+      </Modal>
+      <Modal
+        visible={failureModalVisible}
+        closable={false}
+        footer={null}
+        onCancel={() => setFailureModalVisible(false)}
+      >
+        <div style={{ textAlign: "center" }}>
+          <FrownOutlined style={{ fontSize: "48px", color: "red" }} />
+          <Title level={4}>Money Transfer Failed!</Title>
+          <Paragraph>Oops! Something went wrong. 😞</Paragraph>
+        </div>
+      </Modal>
     </div>
   );
 };
