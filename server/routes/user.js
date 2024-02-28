@@ -66,14 +66,12 @@ router.post("/signin", async (req, res) => {
     password: req.body.password,
   });
   if (user) {
-    const token = jwt.sign({
-      userId: jwt.sign(
-        {
-          userId: user._id,
-        },
-        process.env.JWT_SECRET
-      ),
-    });
+    const token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.JWT_SECRET
+    );
     res.json({
       token: token,
     });
@@ -86,21 +84,50 @@ const updateBody = zod.object({
   password: zod.string().optional(),
   firstName: zod.string().optional(),
   lastName: zod.string().optional(),
+  username: zod.string().optional(),
+  code: zod.string().optional(),
 });
 router.put("/update-profile", authMiddleWare, async (req, res) => {
-  const { success } = updateBody.safeParse(req.body);
+  const { success, data } = updateBody.safeParse(req.body);
   if (!success) {
-    return res.status(401).json({ message: "Error while updating profile!" });
+    return res.status(400).json({ message: "Error while updating profile!" });
   }
-  await User.updateOne(req.body, {
-    id: req.userId,
-  });
 
-  res.json({
-    message: "Profile updated successfully",
-  });
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.userId },
+      { $set: data }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
+router.get("/profile", authMiddleWare, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findOne({ _id: userId });
+    if (user) {
+      return res.status(200).json({
+        ...user._doc,
+        password: undefined,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+});
 router.get("/search-user", authMiddleWare, async (req, res) => {
   const filter = req.query.filter || "";
 
@@ -109,24 +136,59 @@ router.get("/search-user", authMiddleWare, async (req, res) => {
       {
         firstName: {
           $regex: filter,
+          $options: "i",
         },
       },
       {
         lastName: {
           $regex: filter,
+          $options: "i",
+        },
+      },
+      {
+        username: {
+          $regex: filter,
+          $options: "i",
         },
       },
     ],
   });
 
   res.json({
-    user: users.map((user) => ({
+    users: users.map((user) => ({
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
       _id: user._id,
     })),
   });
+});
+
+router.post("/security-check", authMiddleWare, async (req, res) => {
+  const code = req.body.code;
+
+  try {
+    const userId = req.userId;
+    const user = await User.findOne({ _id: userId });
+
+    if (user) {
+      if (user.code === code)
+        return res.status(200).json({ success: true, message: "Successful" });
+      else
+        return res
+          .status(401)
+          .json({ success: false, message: "Wrong security code" });
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error finding user:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
 });
 
 module.exports = router;
