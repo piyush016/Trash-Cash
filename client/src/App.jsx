@@ -4,6 +4,7 @@ import Signup from "./screens/Signup";
 import Signin from "./screens/Signin";
 import Dashboard from "./screens/Dashboard";
 import SendMoney from "./screens/SendMoney";
+import Profile from "./screens/Profile";
 import SideNavigation from "./components/SideNavigation";
 import Nav from "./components/Nav";
 import Foot from "./components/Foot";
@@ -23,6 +24,7 @@ function App() {
               <Route path='/signin' element={<Signin />} />
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/send-money' element={<SendMoney />} />
+              <Route path='/profile' element={<Profile />} />
             </Routes>
           </Content>
         </Layout>
