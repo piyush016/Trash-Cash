@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   useNavigate,
 } from "react-router-dom";
+import Home from "./screens/Home";
 import Signup from "./screens/Signup";
 import Signin from "./screens/Signin";
 import Dashboard from "./screens/Dashboard";
@@ -57,34 +58,34 @@ function ProtectedRoute({ element }) {
 function App() {
   return (
     <Router>
-      <Layout style={{ margin: 0, padding: 0, maxHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh" }}>
         <Nav />
         <Layout>
           <SideNavigation />
-          <Content style={{ padding: "8px" }}>
-            <Routes>
-              <Route path='/signup' element={<Signup />} />
-              <Route path='/signin' element={<Signin />} />
-
-              <Route
-                path='/dashboard'
-                element={<ProtectedRoute element={<Dashboard />} />}
-              />
-
-              <Route
-                path='/send-money'
-                element={<ProtectedRoute element={<SendMoney />} />}
-              />
-
-              <Route
-                path='/profile'
-                element={<ProtectedRoute element={<Profile />} />}
-              />
-            </Routes>
-          </Content>
+          <Layout>
+            <Content style={{ margin: 8, padding: 24 }}>
+              <Routes>
+                <Route exact path='/' element={<Home />} />
+                <Route path='/signup' element={<Signup />} />
+                <Route path='/signin' element={<Signin />} />
+                <Route
+                  path='/dashboard'
+                  element={<ProtectedRoute element={<Dashboard />} />}
+                />
+                <Route
+                  path='/send-money'
+                  element={<ProtectedRoute element={<SendMoney />} />}
+                />
+                <Route
+                  path='/profile'
+                  element={<ProtectedRoute element={<Profile />} />}
+                />
+              </Routes>
+            </Content>
+          </Layout>
         </Layout>
-        <Foot />
       </Layout>
+      <Foot />
     </Router>
   );
 }
