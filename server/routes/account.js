@@ -1,5 +1,5 @@
 const express = require("express");
-const { mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const { authMiddleWare } = require("../middleware/auth");
 const { Account } = require("../models/account");
 
@@ -12,6 +12,15 @@ router.get("/balance", authMiddleWare, async (req, res) => {
 
   res.json({
     balance: account.balance,
+  });
+});
+
+router.get("/transactions", authMiddleWare, async (req, res) => {
+  const account = await Account.findOne({
+    userId: req.userId,
+  });
+  res.json({
+    transactions: account.transactions,
   });
 });
 
@@ -48,6 +57,30 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
   await Account.updateOne(
     { userId: to },
     { $inc: { balance: amount } }
+  ).session(session);
+
+  await Account.updateOne(
+    { userId: req.userId },
+    {
+      $push: {
+        transactions: {
+          $each: [{ amount, isCredit: false, otherPartyUserId: to }],
+          $position: 0,
+        },
+      },
+    }
+  ).session(session);
+
+  await Account.updateOne(
+    { userId: to },
+    {
+      $push: {
+        transactions: {
+          $each: [{ amount, isCredit: true, otherPartyUserId: req.userId }],
+          $position: 0,
+        },
+      },
+    }
   ).session(session);
 
   await session.commitTransaction();
