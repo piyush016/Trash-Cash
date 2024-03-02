@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Define user schema
 const userSchema = mongoose.Schema({
   username: {
     type: String,
@@ -13,7 +14,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true, minLength: 6, maxLength: 25 },
   firstName: { type: String, required: true, trim: true, maxLength: 50 },
   lastName: { type: String, required: true, trim: true, maxLength: 50 },
-  code: { type: String, reuired: false, maxLength: 4 },
+  code: { type: String, required: false, maxLength: 4 },
 });
 
 const User = mongoose.model("User", userSchema);
