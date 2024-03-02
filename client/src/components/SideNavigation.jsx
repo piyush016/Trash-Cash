@@ -14,24 +14,32 @@ const SideNavigation = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear token from localStorage
     localStorage.removeItem("token");
-    // Redirect to the home page
     navigate("/");
     notification.success({
-      message: `Bye ${firstName}`,
+      message: "Bye",
       description: "See you soon!",
     });
   };
 
   return (
-    <Sider collapsed={true} style={{ background: "#fff" }}>
-      <div className='flex items-center justify-center m-4'>
+    <Sider
+      collapsed={true}
+      style={{ background: "#fff", height: "100vh", position: "fixed" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "16px 0",
+        }}
+      >
         <Avatar size={40} icon={<FontAwesomeIcon icon={faUser} />} />
       </div>
       <Menu theme='light' mode='inline'>
         <Menu.Item key='1' icon={<FontAwesomeIcon icon={faChartBar} />}>
-          <Link to='/dashboard' className='m-2'>
+          <Link to='/dashboard' style={{ margin: "0 8px" }}>
             Dashboard
           </Link>
         </Menu.Item>
@@ -39,12 +47,12 @@ const SideNavigation = () => {
           key='2'
           icon={<FontAwesomeIcon icon={faMoneyBillTransfer} />}
         >
-          <Link to='/send-money' className='m-2'>
+          <Link to='/send-money' style={{ margin: "0 8px" }}>
             Send Money
           </Link>
         </Menu.Item>
         <Menu.Item key='3' icon={<FontAwesomeIcon icon={faUser} />}>
-          <Link to='/profile' className='m-2'>
+          <Link to='/profile' style={{ margin: "0 8px" }}>
             Profile
           </Link>
         </Menu.Item>

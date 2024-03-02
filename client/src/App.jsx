@@ -1,5 +1,10 @@
 import "./App.css";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter as Router,
+  useNavigate,
+} from "react-router-dom";
 import Signup from "./screens/Signup";
 import Signin from "./screens/Signin";
 import Dashboard from "./screens/Dashboard";
@@ -8,13 +13,51 @@ import Profile from "./screens/Profile";
 import SideNavigation from "./components/SideNavigation";
 import Nav from "./components/Nav";
 import Foot from "./components/Foot";
-import { Layout } from "antd";
+import { Layout, Modal } from "antd";
+import { useState, useEffect } from "react";
 const { Content } = Layout;
+
+function ProtectedRoute({ element }) {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate("/");
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Modal
+          centered
+          open={showModal}
+          title='Unauthorized accesss'
+          onOk={() => navigate("/signin")}
+          onCancel={handleModalClose}
+        >
+          <div>You need to sign in to access this page.</div>
+        </Modal>
+      </>
+    );
+  }
+  return element;
+}
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout style={{ minHeight: "100vh" }}>
+    <Router>
+      <Layout style={{ margin: 0, padding: 0, maxHeight: "100vh" }}>
         <Nav />
         <Layout>
           <SideNavigation />
@@ -22,15 +65,27 @@ function App() {
             <Routes>
               <Route path='/signup' element={<Signup />} />
               <Route path='/signin' element={<Signin />} />
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/send-money' element={<SendMoney />} />
-              <Route path='/profile' element={<Profile />} />
+
+              <Route
+                path='/dashboard'
+                element={<ProtectedRoute element={<Dashboard />} />}
+              />
+
+              <Route
+                path='/send-money'
+                element={<ProtectedRoute element={<SendMoney />} />}
+              />
+
+              <Route
+                path='/profile'
+                element={<ProtectedRoute element={<Profile />} />}
+              />
             </Routes>
           </Content>
         </Layout>
         <Foot />
       </Layout>
-    </BrowserRouter>
+    </Router>
   );
 }
 

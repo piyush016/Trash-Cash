@@ -1,13 +1,25 @@
 import { Layout } from "antd";
+const { Header } = Layout;
 import "./Nav.css";
 
-const { Header } = Layout;
+const headerStyle = {
+  backgroundColor: "#1890ff",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const logoStyle = {
+  color: "white",
+  fontWeight: "bold",
+  fontSize: "1.5rem",
+  margin: "0",
+};
 
 const Nav = () => {
   return (
-    <Header className='nav-header'>
-      <div className='flex justify-center md:justify-start'>
-        <h1 className='text-white font-bold logo'>Trash Cash</h1>
+    <Header style={headerStyle}>
+      <div style={{ display: "flex", justifyContent: "start" }}>
+        <h1 style={logoStyle}>Trash Cash</h1>
       </div>
     </Header>
   );

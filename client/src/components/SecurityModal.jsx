@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Modal, Input, Button, notification } from "antd";
 import axios from "axios";
 
 const SecurityModal = ({ visible, onSuccess, onCancel }) => {
   const [code, setCode] = useState(["", "", "", ""]);
-  const inputRefs = [];
+  const inputRefs = useRef([]);
 
   const handleConfirm = async () => {
     try {
@@ -36,8 +36,8 @@ const SecurityModal = ({ visible, onSuccess, onCancel }) => {
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
-    if (index < inputRefs.length - 1 && value !== "") {
-      inputRefs[index + 1].focus();
+    if (index < inputRefs.current.length - 1 && value !== "") {
+      inputRefs.current[index + 1].focus();
     }
   };
 
@@ -59,7 +59,7 @@ const SecurityModal = ({ visible, onSuccess, onCancel }) => {
         {code.map((value, index) => (
           <Input
             key={index}
-            ref={(ref) => (inputRefs[index] = ref)}
+            ref={(ref) => (inputRefs.current[index] = ref)}
             value={value}
             onChange={(e) => handleInputChange(index, e.target.value)}
             maxLength={1}

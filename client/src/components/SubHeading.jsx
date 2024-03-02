@@ -1,3 +1,13 @@
 export default function SubHeading({ label }) {
-  return <div className='text-slate-500 text-md pt-1 px-4 pb-4'>{label}</div>;
+  return (
+    <div
+      style={{
+        color: "#718096",
+        fontSize: "1rem",
+        padding: "0.25rem 0 1rem",
+      }}
+    >
+      {label}
+    </div>
+  );
 }

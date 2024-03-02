@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card, Input, Button, Typography, Avatar, Modal } from "antd";
 import {
   DollarCircleOutlined,

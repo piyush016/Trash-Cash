@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Layout,
   Card,
@@ -20,7 +21,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -72,7 +72,7 @@ const Dashboard = () => {
       setAccountBalance(balanceResponse.data.balance);
 
       const transactionsResponse = await axios.get(
-        `${process.env.API_URL}/account/transactions`,
+        `${process.env.API_URL}/account/transactions?date=today`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -81,10 +81,10 @@ const Dashboard = () => {
       );
       setRecentTransactions(transactionsResponse.data.transactions);
 
-      const notificationsResponse = await axios.get(
-        `${process.env.API_URL}/notifications`
-      );
-      setNotifications(notificationsResponse.data.notifications);
+      // const notificationsResponse = await axios.get(
+      //   `${process.env.API_URL}/notifications`
+      // );
+      // setNotifications(notificationsResponse.data.notifications);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -206,19 +206,24 @@ const Dashboard = () => {
         <Col span={24}>
           <Card title='Recent Transactions'>
             <Table
+              bordered
+              fixed
+              pagination={false}
               dataSource={recentTransactions}
               columns={[
                 {
                   title: "Amount",
                   dataIndex: "amount",
                   key: "amount",
-                  render: (amount) => <span>{amount}</span>,
+                  render: (amount) => <span> &#8377;{amount}</span>,
                 },
                 {
                   title: "Credit/Debit",
                   dataIndex: "isCredit",
                   key: "type",
-                  render: (isCredit) => (isCredit ? "Cr" : "Db"),
+                  render: (isCredit) => (
+                    <span>{isCredit ? "Credit" : "Debit"}</span>
+                  ),
                 },
                 {
                   title: "Account Number",

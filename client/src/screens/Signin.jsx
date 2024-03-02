@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { notification } from "antd";
+import { notification, Layout } from "antd";
 import Heading from "../components/Heading";
 import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import BottomWarning from "../components/BottomWarning";
+const { Content } = Layout;
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -40,42 +41,64 @@ export default function SignIn() {
     setLoading(false);
   };
   return (
-    <div className='flex justify-center h-screen bg-slate-300'>
-      <div className='flex flex-col justify-center'>
-        <div className='rounded-lg bg-white w-80 text-center p-2 h-max px-4'>
-          <Heading label={"Sign In"} />
-          <SubHeading label={"Welcome back! Please sign in to your account."} />
-
-          <InputBox
-            label={"Username"}
-            type={"text"}
-            placeholder={"Enter your username"}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <InputBox
-            label={"Password"}
-            type={"password"}
-            placeholder={"Enter your password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className='pt-4'>
-            <Button
-              onClick={handleSignIn}
-              label={loading ? "Signing In..." : "Sign In"}
-              disabled={loading}
+    <Layout>
+      <Content
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              borderRadius: "0.5rem",
+              backgroundColor: "#fff",
+              width: "20rem",
+              padding: "1rem",
+            }}
+          >
+            <Heading label={"Sign In"} />
+            <SubHeading
+              label={"Welcome back! Please sign in to your account."}
+            />
+            <InputBox
+              label={"Username"}
+              type={"text"}
+              placeholder={"Enter your username"}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <InputBox
+              label={"Password"}
+              type={"password"}
+              placeholder={"Enter your password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div style={{ paddingTop: "1rem" }}>
+              <Button
+                onClick={handleSignIn}
+                label={loading ? "Signing In..." : "Sign In"}
+                disabled={loading}
+              />
+            </div>
+            {error && <p style={{ color: "#f00" }}>{error}</p>}
+            <BottomWarning
+              label={"Don't have an account?"}
+              buttonText={" Sign up"}
+              to={"/signup"}
             />
           </div>
-          {error && <p className='text-red-500'>{error}</p>}
-
-          <BottomWarning
-            label={"Don't have an account?"}
-            buttonText={" Sign up"}
-            to={"/signup"}
-          />
         </div>
-      </div>
-    </div>
+      </Content>
+    </Layout>
   );
 }

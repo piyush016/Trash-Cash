@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
 
+const bottomWarningStyle = {
+  padding: "8px 0",
+  fontSize: "14px",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const linkStyle = {
+  cursor: "pointer",
+  textDecoration: "none",
+  paddingLeft: "4px",
+};
+
 export default function BottomWarning({ label, buttonText, to }) {
   return (
-    <div className='py-2 text-sm flex justify-center'>
+    <div style={bottomWarningStyle}>
       <div>{label}</div>
-      <Link className='pointer underline pl-1 cursor-pointer' to={to}>
+      <Link style={linkStyle} to={to}>
         {buttonText}
       </Link>
     </div>

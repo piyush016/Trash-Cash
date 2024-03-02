@@ -68,15 +68,20 @@ const Profile = () => {
   };
 
   return (
-    <div className='profile-page flex justify-center items-center w-full h-full'>
-      <div className='w-full max-w-4xl h-full'>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div style={{ width: "100%", maxWidth: "40rem", height: "100%" }}>
         <Card
-          className='profile-card p-8'
+          style={{ padding: "2rem" }}
           title={
-            <Title
-              level={4}
-              className='text-lg md:text-xl lg:text-2xl xl:text-3xl'
-            >
+            <Title level={4} style={{ fontSize: "1.5rem", margin: 0 }}>
               User Information
             </Title>
           }
@@ -85,22 +90,22 @@ const Profile = () => {
             <Skeleton active avatar paragraph={{ rows: 4 }} />
           ) : (
             <>
-              <div className='avatar-container text-center mb-4'>
+              <div style={{ textAlign: "center", marginBottom: "1rem" }}>
                 <Avatar size={60} src={profileData.avatar}>
                   {profileData.firstName &&
                     profileData.firstName.charAt(0).toUpperCase()}
                   {profileData.lastName &&
                     profileData.lastName.charAt(0).toUpperCase()}
                 </Avatar>
-                <p className='mt-2 text-lg'>
+                <p style={{ marginTop: "0.5rem", fontSize: "1.25rem" }}>
                   Account Number: {profileData._id}
                 </p>
               </div>
               <Meta
                 description={
                   <>
-                    <div className='profile-field mb-2'>
-                      <label className='text-lg'>First Name:</label>
+                    <div style={{ marginBottom: "1rem" }}>
+                      <label style={{ fontSize: "1.25rem" }}>First Name:</label>
                       <Input
                         value={profileData.firstName}
                         disabled={!editMode}
@@ -109,8 +114,8 @@ const Profile = () => {
                         }
                       />
                     </div>
-                    <div className='profile-field mb-2'>
-                      <label className='text-lg'>Last Name:</label>
+                    <div style={{ marginBottom: "1rem" }}>
+                      <label style={{ fontSize: "1.25rem" }}>Last Name:</label>
                       <Input
                         value={profileData.lastName}
                         disabled={!editMode}
@@ -119,8 +124,8 @@ const Profile = () => {
                         }
                       />
                     </div>
-                    <div className='profile-field mb-2'>
-                      <label className='text-lg'>Username:</label>
+                    <div style={{ marginBottom: "1rem" }}>
+                      <label style={{ fontSize: "1.25rem" }}>Username:</label>
                       <Input
                         value={profileData.username}
                         disabled={!editMode}
@@ -129,8 +134,8 @@ const Profile = () => {
                         }
                       />
                     </div>
-                    <div className='profile-field mb-2'>
-                      <label className='text-lg'>Password:</label>
+                    <div style={{ marginBottom: "1rem" }}>
+                      <label style={{ fontSize: "1.25rem" }}>Password:</label>
                       <Input.Password
                         value={profileData.password}
                         disabled={!editMode}
@@ -139,8 +144,10 @@ const Profile = () => {
                         }
                       />
                     </div>
-                    <div className='profile-field mb-2'>
-                      <label className='text-lg'>Security Code:</label>
+                    <div style={{ marginBottom: "1rem" }}>
+                      <label style={{ fontSize: "1.25rem" }}>
+                        Security Code:
+                      </label>
                       <Input
                         value={profileData.code}
                         disabled={!editMode}
@@ -155,11 +162,14 @@ const Profile = () => {
             </>
           )}
           {editMode && (
-            <Button className='mt-4 mr-4' onClick={handleSaveChanges}>
+            <Button
+              style={{ marginTop: "1rem", marginRight: "0.5rem" }}
+              onClick={handleSaveChanges}
+            >
               Save Changes
             </Button>
           )}
-          <Button className='mt-4' onClick={handleEditButtonClick}>
+          <Button style={{ marginTop: "1rem" }} onClick={handleEditButtonClick}>
             {editMode ? "Cancel Edit" : "Edit Profile"}
           </Button>
         </Card>
