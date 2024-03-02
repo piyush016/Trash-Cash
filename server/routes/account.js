@@ -16,11 +16,30 @@ router.get("/balance", authMiddleWare, async (req, res) => {
 });
 
 router.get("/transactions", authMiddleWare, async (req, res) => {
+  const { date } = req.query;
+  let transactions = [];
+
   const account = await Account.findOne({
     userId: req.userId,
   });
+
+  if (!date) {
+    transactions = account.transactions;
+  } else if (date === "today") {
+    const today = new Date();
+    const todayTransactions = account.transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date);
+      return (
+        transactionDate.getFullYear() === today.getFullYear() &&
+        transactionDate.getMonth() === today.getMonth() &&
+        transactionDate.getDate() === today.getDate()
+      );
+    });
+    transactions = todayTransactions;
+  }
+
   res.json({
-    transactions: account.transactions,
+    transactions,
   });
 });
 
