@@ -11,6 +11,7 @@ import {
   Input,
   Typography,
   Avatar,
+  Table,
 } from "antd";
 import {
   DollarOutlined,
@@ -60,19 +61,29 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const balanceResponse = await axios.get(`${apiURL}/account/balance`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const balanceResponse = await axios.get(
+        `${process.env.API_URL}/account/balance`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setAccountBalance(balanceResponse.data.balance);
 
       const transactionsResponse = await axios.get(
-        `${apiURL}/transactions/recent`
+        `${process.env.API_URL}/account/transactions`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       setRecentTransactions(transactionsResponse.data.transactions);
 
-      const notificationsResponse = await axios.get(`${apiURL}/notifications`);
+      const notificationsResponse = await axios.get(
+        `${process.env.API_URL}/notifications`
+      );
       setNotifications(notificationsResponse.data.notifications);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -134,7 +145,7 @@ const Dashboard = () => {
             <div
               style={{
                 height: "150px",
-                overflowY: "auto",
+                overflowY: "hidden",
               }}
             >
               <List
@@ -194,17 +205,42 @@ const Dashboard = () => {
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card title='Recent Transactions'>
-            <List
-              itemLayout='horizontal'
+            <Table
               dataSource={recentTransactions}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={item.title}
-                    description={`Amount: ${item.amount}, Date: ${item.date}`}
-                  />
-                </List.Item>
-              )}
+              columns={[
+                {
+                  title: "Amount",
+                  dataIndex: "amount",
+                  key: "amount",
+                  render: (amount) => <span>{amount}</span>,
+                },
+                {
+                  title: "Credit/Debit",
+                  dataIndex: "isCredit",
+                  key: "type",
+                  render: (isCredit) => (isCredit ? "Cr" : "Db"),
+                },
+                {
+                  title: "Account Number",
+                  dataIndex: "otherPartyUserId",
+                  key: "receiverId",
+                  render: (otherPartyUserId) => <span>{otherPartyUserId}</span>,
+                },
+                {
+                  title: "Date",
+                  dataIndex: "date",
+                  key: "timeStamp",
+                  render: (date) => (
+                    <span>
+                      {new Date(date).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  ),
+                },
+              ]}
             />
           </Card>
         </Col>
