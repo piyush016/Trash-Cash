@@ -23,10 +23,7 @@ const SideNavigation = () => {
   };
 
   return (
-    <Sider
-      collapsed={true}
-      style={{ background: "#fff", height: "100vh", position: "fixed" }}
-    >
+    <Sider collapsed={true} style={{ background: "#fff" }}>
       <div
         style={{
           display: "flex",
