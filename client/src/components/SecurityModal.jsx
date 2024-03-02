@@ -47,10 +47,10 @@ const SecurityModal = ({ visible, onSuccess, onCancel }) => {
       visible={visible}
       onCancel={onCancel}
       footer={[
-        <Button key='cancel' onClick={onCancel} type='danger'>
+        <Button key='cancel' onClick={onCancel} danger>
           Cancel
         </Button>,
-        <Button key='confirm' type='primary' onClick={handleConfirm}>
+        <Button key='confirm' onClick={handleConfirm}>
           Confirm
         </Button>,
       ]}
