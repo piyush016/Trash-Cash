@@ -11,7 +11,7 @@ const Home = () => {
         <Col xs={24} md={12}>
           <Features />
           <Divider orientation='center' style={{ marginBottom: "24px" }}>
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <div style={{ textAlign: "center" }}>
               <Link to='/signin'>
                 <Button
                   type='primary'

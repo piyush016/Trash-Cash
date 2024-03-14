@@ -101,7 +101,7 @@ const Passbook = () => {
   return (
     <div style={{ textAlign: "center" }}>
       <Divider orientation='left'>
-        <Title level={3} style={{ marginBottom: "25px" }}>
+        <Title level={3} style={{ fontSize: "24px" }}>
           Passbook
         </Title>
       </Divider>

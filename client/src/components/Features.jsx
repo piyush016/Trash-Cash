@@ -15,7 +15,7 @@ const Features = () => {
   return (
     <>
       <Divider orientation='center' style={{ marginBottom: "24px" }}>
-        <Title level={3} style={{ fontSize: "24px", marginTop: "10px" }}>
+        <Title level={3} style={{ fontSize: "24px" }}>
           Bank Features
         </Title>
       </Divider>

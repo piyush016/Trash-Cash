@@ -59,7 +59,7 @@ function ProtectedRoute({ element }) {
 function App() {
   return (
     <Router>
-      <Layout style={{ minHeight: "87vh" }}>
+      <Layout style={{ minHeight: "100vh" }}>
         <Nav />
         <Layout>
           <SideNavigation />
@@ -89,8 +89,8 @@ function App() {
             </Content>
           </Layout>
         </Layout>
+        <Foot />
       </Layout>
-      <Foot />
     </Router>
   );
 }

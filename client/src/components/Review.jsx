@@ -5,8 +5,8 @@ const { Title, Paragraph } = Typography;
 const Review = () => {
   return (
     <div style={{ marginTop: "40px" }}>
-      <Divider orientation='center' style={{ marginBottom: "24px" }}>
-        <Title level={3} style={{ fontSize: "24px", marginTop: "10px" }}>
+      <Divider orientation='center'>
+        <Title level={3} style={{ fontSize: "24px" }}>
           What Customers Say
         </Title>
       </Divider>

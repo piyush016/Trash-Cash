@@ -7,6 +7,7 @@ import {
   Input,
   Typography,
   message,
+  Divider,
 } from "antd";
 import axios from "axios";
 
@@ -68,24 +69,20 @@ const Profile = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: "40rem", height: "100%" }}>
-        <Card
-          style={{ padding: "2rem" }}
-          title={
-            <Title level={4} style={{ fontSize: "1.5rem", margin: 0 }}>
-              User Information
-            </Title>
-          }
-        >
+    <>
+      <Divider orientation='left'>
+        <Title level={4} style={{ fontSize: "24px" }}>
+          User Information
+        </Title>
+      </Divider>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Card style={{ padding: "2rem" }}>
           {loading ? (
             <Skeleton active avatar paragraph={{ rows: 4 }} />
           ) : (
@@ -174,7 +171,7 @@ const Profile = () => {
           </Button>
         </Card>
       </div>
-    </div>
+    </>
   );
 };
 

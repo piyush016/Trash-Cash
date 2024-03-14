@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, Input, Button, Typography, Avatar, Modal } from "antd";
+import { useState } from "react";
+import { Card, Input, Button, Typography, Avatar, Divider, Modal } from "antd";
 import {
   DollarCircleOutlined,
   CheckCircleOutlined,
@@ -59,21 +59,26 @@ const SendMoney = () => {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen bg-gray-100'>
-      <Card className='w-96 p-8 h-80vh'>
-        <div className='text-center mb-6'>
-          <Avatar style={{ backgroundColor: "#f56a00" }} size={50}>
+    <div>
+      <Divider orientation='left'>
+        <Title level={3} style={{ fontSize: "24px" }}>
+          Send Money
+        </Title>
+      </Divider>
+      <Card>
+        <div style={{ textAlign: "center" }}>
+          <Avatar style={{ backgroundColor: "#f56a00" }} size={64}>
             {firstName && firstName.charAt(0).toUpperCase()}
           </Avatar>
-          <Title level={3} className='mt-3 mb-0 text-xl font-bold'>
+          <Title level={4} style={{ marginTop: "5px" }}>
             Sending Money to {firstName}
           </Title>
         </div>
-        <Paragraph className='mb-6'>
+        <Paragraph>
           Please enter the amount you wish to send to {firstName}. Make sure to
           double-check the details before proceeding with the transaction.
         </Paragraph>
-        <div className='mb-6'>
+        <div>
           <Input
             type='number'
             placeholder='Amount (Rs)'
@@ -81,21 +86,21 @@ const SendMoney = () => {
             onChange={(e) => setAmount(e.target.value)}
             prefix={<DollarCircleOutlined />}
             addonAfter='Rs'
-            className='text-lg'
           />
         </div>
         <Button
           type='primary'
           onClick={handleSubmit}
-          className='w-full'
-          style={{ backgroundColor: "green", borderColor: "green" }}
+          style={{
+            backgroundColor: "green",
+            borderColor: "green",
+            marginTop: "10px",
+          }}
         >
           Send Money
         </Button>
         {parseInt(amount) < 1 && (
-          <p className='text-red-500 text-sm mt-2'>
-            Please enter a valid amount (greater than or equal to 1).
-          </p>
+          <p>Please enter a valid amount (greater than or equal to 1).</p>
         )}
       </Card>
       <SecurityModal
@@ -104,7 +109,7 @@ const SendMoney = () => {
         onCancel={() => setModalVisible(false)}
       />
       <Modal
-        visible={successModalVisible}
+        show={successModalVisible}
         closable={false}
         footer={null}
         onCancel={() => setSuccessModalVisible(false)}
