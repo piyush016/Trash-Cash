@@ -44,8 +44,8 @@ const SideNavigation = () => {
           key='2'
           icon={<FontAwesomeIcon icon={faMoneyBillTransfer} />}
         >
-          <Link to='/send-money' style={{ margin: "0 8px" }}>
-            Send Money
+          <Link to='/passbook' style={{ margin: "0 8px" }}>
+            Passbook
           </Link>
         </Menu.Item>
         <Menu.Item key='3' icon={<FontAwesomeIcon icon={faUser} />}>

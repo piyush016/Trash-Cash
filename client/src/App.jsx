@@ -9,6 +9,7 @@ import Home from "./screens/Home";
 import Signup from "./screens/Signup";
 import Signin from "./screens/Signin";
 import Dashboard from "./screens/Dashboard";
+import Passbook from "./screens/Passbook";
 import SendMoney from "./screens/SendMoney";
 import Profile from "./screens/Profile";
 import SideNavigation from "./components/SideNavigation";
@@ -58,7 +59,7 @@ function ProtectedRoute({ element }) {
 function App() {
   return (
     <Router>
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "87vh" }}>
         <Nav />
         <Layout>
           <SideNavigation />
@@ -71,6 +72,10 @@ function App() {
                 <Route
                   path='/dashboard'
                   element={<ProtectedRoute element={<Dashboard />} />}
+                />
+                <Route
+                  path='/passbook'
+                  element={<ProtectedRoute element={<Passbook />} />}
                 />
                 <Route
                   path='/send-money'
