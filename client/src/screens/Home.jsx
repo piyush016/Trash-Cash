@@ -1,35 +1,37 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Typography } from "antd";
-import { useEffect } from "react";
-
-const { Title, Paragraph } = Typography;
+import { Link } from "react-router-dom";
+import { Button, Row, Col, Divider } from "antd";
+import Hero from "../components/Hero";
+import Features from "../components/Features";
+import Review from "../components/Review";
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) navigate("/dashboard");
-  });
   return (
     <div>
-      <div style={{ textAlign: "center", marginTop: "40px" }}>
-        <Title level={2}>
-          Join us in our mission to redefine banking for the betterment of
-          society and the environment. Together, we can transform trash into
-          treasure and build a more sustainable future for generations to come.
-          Welcome to Trash-Bank, where sustainability meets prosperity!
-        </Title>
-        <Paragraph></Paragraph>
-        <Link to='/signin'>
-          <Button type='primary' size='large' style={{ marginRight: "20px" }}>
-            Sign In
-          </Button>
-        </Link>
-        <Link to='/signup'>
-          <Button size='large'>Sign Up</Button>
-        </Link>
-      </div>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={12}>
+          <Features />
+          <Divider orientation='center' style={{ marginBottom: "24px" }}>
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <Link to='/signin'>
+                <Button
+                  type='primary'
+                  size='large'
+                  style={{ marginRight: "20px" }}
+                >
+                  Sign In
+                </Button>
+              </Link>
+              <Link to='/signup'>
+                <Button size='large'>Sign Up</Button>
+              </Link>
+            </div>
+          </Divider>
+        </Col>
+        <Col xs={24} md={12}>
+          <Hero />
+        </Col>
+      </Row>
+      <Review />
     </div>
   );
 };
