@@ -43,6 +43,38 @@ router.get("/transactions", authMiddleWare, async (req, res) => {
   });
 });
 
+router.get("/passbook", authMiddleWare, async (req, res) => {
+  const { from, to } = req.query;
+  let transactions = [];
+
+  try {
+    const account = await Account.findOne({
+      userId: req.userId,
+    });
+
+    if (!from || !to) {
+      transactions = account.transactions;
+    } else {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+      const filteredTransactions = account.transactions.filter(
+        (transaction) => {
+          const transactionDate = new Date(transaction.date);
+          return transactionDate >= fromDate && transactionDate <= toDate;
+        }
+      );
+      transactions = filteredTransactions;
+    }
+
+    res.json({
+      transactions,
+    });
+  } catch (error) {
+    console.error("Error fetching passbook data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.post("/transfer", authMiddleWare, async (req, res) => {
   const session = await mongoose.startSession();
 

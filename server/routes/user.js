@@ -19,10 +19,10 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Invalid request" });
   }
   const user = User.findOne({
-    usrename: req.body.username,
+    username: req.body.username,
   });
 
-  if (user._id) {
+  if (user) {
     return res.status(400).json({
       message: "User already exists",
     });
