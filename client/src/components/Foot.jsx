@@ -17,22 +17,16 @@ const beatAnimation = `
 const Foot = () => {
   return (
     <Row
-      justify='space-between'
+      justify='center'
+      align='middle'
       style={{
         backgroundColor: "#f0f2f5",
         padding: "16px",
         fontFamily: "Arial, sans-serif",
         fontSize: "14px",
+        textAlign: "center",
       }}
     >
-      <Col></Col>
-      <Col span={12} align='middle'>
-        <Typography.Text style={{ fontWeight: "bold", fontSize: "16px" }}>
-          Trash Cash
-        </Typography.Text>
-        <br />
-        <Typography.Text>&copy; All rights reserved</Typography.Text>
-      </Col>
       <Col>
         <Typography.Text>
           Made with{" "}
@@ -51,6 +45,7 @@ const Foot = () => {
         <a
           href='https://github.com/piyush016/trash-cash'
           target='_blank'
+          rel='noopener noreferrer'
           style={{
             textDecoration: "none",
             color: "#1890ff",
