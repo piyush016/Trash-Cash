@@ -12,6 +12,7 @@ import Dashboard from "./screens/Dashboard";
 import Passbook from "./screens/Passbook";
 import SendMoney from "./screens/SendMoney";
 import Profile from "./screens/Profile";
+import Expenses from "./screens/Expenses";
 import SideNavigation from "./components/SideNavigation";
 import Nav from "./components/Nav";
 import Foot from "./components/Foot";
@@ -80,6 +81,10 @@ function App() {
                 <Route
                   path='/send-money'
                   element={<ProtectedRoute element={<SendMoney />} />}
+                />
+                <Route
+                  path='/expenses'
+                  element={<ProtectedRoute element={<Expenses />} />}
                 />
                 <Route
                   path='/profile'

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChartBar,
   faMoneyBillTransfer,
+  faChartPie,
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
@@ -48,13 +49,18 @@ const SideNavigation = () => {
             Passbook
           </Link>
         </Menu.Item>
-        <Menu.Item key='3' icon={<FontAwesomeIcon icon={faUser} />}>
+        <Menu.Item key='3' icon={<FontAwesomeIcon icon={faChartPie} />}>
+          <Link to='/expenses' style={{ margin: "0 8px" }}>
+            Expenses
+          </Link>
+        </Menu.Item>
+        <Menu.Item key='4' icon={<FontAwesomeIcon icon={faUser} />}>
           <Link to='/profile' style={{ margin: "0 8px" }}>
             Profile
           </Link>
         </Menu.Item>
         <Menu.Item
-          key='4'
+          key='5'
           icon={<FontAwesomeIcon icon={faSignOutAlt} />}
           onClick={handleLogout}
         >

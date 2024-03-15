@@ -10,6 +10,7 @@ const db = require("./config/db");
 
 const userRouter = require("./routes/user");
 const accountRouter = require("./routes/account");
+const chartRouter = require("./routes/charts");
 
 app.get("/", (req, res) =>
   res.json({
@@ -19,6 +20,7 @@ app.get("/", (req, res) =>
 
 app.use("/user", userRouter);
 app.use("/account", accountRouter);
+app.use("/chart", chartRouter);
 
 const port = process.env.PORT || 3000;
 

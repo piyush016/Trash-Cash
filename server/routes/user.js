@@ -1,11 +1,12 @@
 const express = require("express");
-const router = express.Router();
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
 const { authMiddleWare } = require("../middleware/auth");
 const { User } = require("../models/user");
 const { Account } = require("../models/account");
 require("dotenv").config();
+
+const router = express.Router();
 
 const signupSchema = zod.object({
   username: zod.string().email(),
