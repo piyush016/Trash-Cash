@@ -109,7 +109,7 @@ const SendMoney = () => {
         onCancel={() => setModalVisible(false)}
       />
       <Modal
-        show={successModalVisible}
+        open={successModalVisible}
         closable={false}
         footer={null}
         onCancel={() => setSuccessModalVisible(false)}
