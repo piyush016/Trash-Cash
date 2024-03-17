@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Card, Input, Button, Typography, Avatar, Divider, Modal } from "antd";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Avatar,
+  Divider,
+  Modal,
+  message,
+} from "antd";
 import {
   DollarCircleOutlined,
   CheckCircleOutlined,
@@ -49,7 +58,7 @@ const SendMoney = () => {
         navigate("/dashboard");
       }, 5000);
     } catch (error) {
-      console.error("Error sending money:", error);
+      message.error("Error sending money");
       setModalVisible(false);
       setFailureModalVisible(true);
       setTimeout(() => {

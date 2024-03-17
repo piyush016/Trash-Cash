@@ -70,7 +70,6 @@ router.get("/passbook", authMiddleWare, async (req, res) => {
       transactions,
     });
   } catch (error) {
-    console.error("Error fetching passbook data:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

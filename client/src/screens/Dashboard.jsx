@@ -13,6 +13,7 @@ import {
   Typography,
   Avatar,
   Table,
+  message,
 } from "antd";
 import {
   DollarOutlined,
@@ -51,7 +52,7 @@ const Dashboard = () => {
       );
       setUsers(response.data.users);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      message.error("Error fetching users:", error);
     }
   };
 
@@ -86,7 +87,7 @@ const Dashboard = () => {
       // );
       // setNotifications(notificationsResponse.data.notifications);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      message.error("Error fetching data:", error);
     }
   };
 

@@ -109,7 +109,6 @@ router.put("/update-profile", authMiddleWare, async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
-    console.error("Error updating profile:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -125,7 +124,6 @@ router.get("/profile", authMiddleWare, async (req, res) => {
       });
     }
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err });
   }
 });
@@ -185,7 +183,6 @@ router.post("/security-check", authMiddleWare, async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
   } catch (error) {
-    console.error("Error finding user:", error);
     return res
       .status(500)
       .json({ success: false, message: "Internal server error" });

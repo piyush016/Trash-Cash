@@ -33,7 +33,7 @@ const Profile = () => {
         setProfileData(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching profile data:", error);
+        message.error("Error fetching profile data.");
         setLoading(false);
       }
     };
@@ -47,7 +47,6 @@ const Profile = () => {
 
   const handleInputChange = (field, value) => {
     setProfileData({ ...profileData, [field]: value });
-    console.log(profileData);
   };
 
   const handleSaveChanges = async () => {
@@ -71,8 +70,8 @@ const Profile = () => {
   return (
     <>
       <Divider orientation='left'>
-        <Title level={4} style={{ fontSize: "24px" }}>
-          User Information
+        <Title level={3} style={{ fontSize: "24px" }}>
+          Profile
         </Title>
       </Divider>
       <div
