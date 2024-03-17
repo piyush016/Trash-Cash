@@ -11,7 +11,6 @@ router.get("/credeb", authMiddleWare, async (req, res) => {
       userId: req.userId,
     });
 
-    // Check if account exists
     if (!account) {
       return res.status(404).json({ error: "Account not found" });
     }
@@ -38,12 +37,10 @@ router.get("/credeb", authMiddleWare, async (req, res) => {
 
     res.json(chartData);
   } catch (error) {
-    console.error("Error fetching transactions:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// Function to generate chart data for the past 30 days
 function generateDayChartData(transactions) {
   const chartData = [];
   const currentDate = new Date();
@@ -69,30 +66,30 @@ function generateDayChartData(transactions) {
   return chartData;
 }
 
-// Function to generate chart data for the past 12 weeks
 function generateWeekChartData(transactions) {
   const chartData = [];
   const currentDate = new Date();
 
+  const currentWeekStartDate = new Date(currentDate);
+  currentWeekStartDate.setDate(currentDate.getDate() - currentDate.getDay());
+
   for (let i = 11; i >= 0; i--) {
-    const startDate = new Date(currentDate);
+    const startDate = new Date(currentWeekStartDate);
     startDate.setDate(startDate.getDate() - i * 7);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 6);
-    const credit = transactions
-      .filter(
-        (transaction) =>
-          isWithinWeek(new Date(transaction.date), startDate, endDate) &&
-          transaction.isCredit
-      )
+
+    const weeklyTransactions = transactions.filter((transaction) =>
+      isWithinWeek(new Date(transaction.date), startDate, endDate)
+    );
+
+    const credit = weeklyTransactions
+      .filter((transaction) => transaction.isCredit)
       .reduce((total, transaction) => total + transaction.amount, 0);
-    const debit = transactions
-      .filter(
-        (transaction) =>
-          isWithinWeek(new Date(transaction.date), startDate, endDate) &&
-          !transaction.isCredit
-      )
+    const debit = weeklyTransactions
+      .filter((transaction) => !transaction.isCredit)
       .reduce((total, transaction) => total + transaction.amount, 0);
+
     chartData.push({
       date: formatDate(startDate, "YYYY-MM-DD"),
       credit,
@@ -103,7 +100,6 @@ function generateWeekChartData(transactions) {
   return chartData;
 }
 
-// Function to generate chart data for the past 12 months
 function generateMonthChartData(transactions) {
   const chartData = [];
   const currentDate = new Date();
@@ -139,7 +135,6 @@ function generateMonthChartData(transactions) {
   return chartData;
 }
 
-// Function to generate chart data for the past 3 years
 function generateYearChartData(transactions) {
   const chartData = [];
   const currentDate = new Date();
@@ -167,7 +162,6 @@ function generateYearChartData(transactions) {
   return chartData;
 }
 
-// Function to check if two dates are within the same day
 function isSameDay(date1, date2) {
   return (
     date1.getFullYear() === date2.getFullYear() &&
@@ -176,22 +170,18 @@ function isSameDay(date1, date2) {
   );
 }
 
-// Function to check if a date is within a week
 function isWithinWeek(date, startDate, endDate) {
   return date >= startDate && date <= endDate;
 }
 
-// Function to check if a date is within a month
 function isWithinMonth(date, startDate, endDate) {
   return date >= startDate && date <= endDate;
 }
 
-// Function to check if a date is within a year
 function isWithinYear(date, startDate, endDate) {
   return date >= startDate && date <= endDate;
 }
 
-// Function to format date in YYYY-MM-DD or YYYY-MM format
 function formatDate(date, format) {
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
