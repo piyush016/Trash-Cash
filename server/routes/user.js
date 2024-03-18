@@ -14,43 +14,55 @@ const signupSchema = zod.object({
   firstName: zod.string(),
   password: zod.string(),
 });
+
 router.post("/signup", async (req, res) => {
   const { success } = signupSchema.safeParse(req.body);
   if (!success) {
     return res.status(400).json({ message: "Invalid request" });
   }
-  const user = User.findOne({
-    username: req.body.username,
-  });
 
-  if (user) {
-    return res.status(400).json({
-      message: "User already exists",
+  try {
+    // Check if user exists
+    const existingUser = await User.findOne({
+      username: req.body.username,
     });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // If user doesn't exist, create a new one
+    const newUser = await User.create({
+      username: req.body.username,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    });
+
+    // Create an account for the new user
+    const userId = newUser._id;
+    await Account.create({
+      userId,
+      balance: 1 + Math.random() * 100000,
+    });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: newUser._id,
+      },
+      process.env.JWT_SECRET
+    );
+
+    // Send success response with token
+    res.json({
+      message: "User created successfully",
+      token,
+    });
+  } catch (error) {
+    console.error("Error while signing up:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-  const dbUser = await User.create({
-    username: req.body.username,
-    password: req.body.password,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-  });
-  const userId = dbUser._id;
-  await Account.create({
-    userId,
-    balance: 1 + Math.random() * 100000,
-  });
-
-  const token = jwt.sign(
-    {
-      userId: dbUser._id,
-    },
-    process.env.JWT_SECRET
-  );
-
-  res.json({
-    message: "User created successfully",
-    token: token,
-  });
 });
 
 const signinBody = zod.object({

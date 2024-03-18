@@ -18,6 +18,7 @@ import Nav from "./components/Nav";
 import Foot from "./components/Foot";
 import { Layout, Modal } from "antd";
 import { useState, useEffect } from "react";
+import Loan from "./screens/Loan";
 const { Content } = Layout;
 
 function ProtectedRoute({ element }) {
@@ -85,6 +86,10 @@ function App() {
                 <Route
                   path='/expenses'
                   element={<ProtectedRoute element={<Expenses />} />}
+                />
+                <Route
+                  path='/loan'
+                  element={<ProtectedRoute element={<Loan />} />}
                 />
                 <Route
                   path='/profile'

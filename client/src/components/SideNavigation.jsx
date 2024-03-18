@@ -7,6 +7,7 @@ import {
   faChartPie,
   faUser,
   faSignOutAlt,
+  faLandmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 const { Sider } = Layout;
@@ -54,13 +55,18 @@ const SideNavigation = () => {
             Expenses
           </Link>
         </Menu.Item>
-        <Menu.Item key='4' icon={<FontAwesomeIcon icon={faUser} />}>
+        <Menu.Item key='4' icon={<FontAwesomeIcon icon={faLandmark} />}>
+          <Link to='/loan' style={{ margin: "0 8px" }}>
+            Loan
+          </Link>
+        </Menu.Item>
+        <Menu.Item key='5' icon={<FontAwesomeIcon icon={faUser} />}>
           <Link to='/profile' style={{ margin: "0 8px" }}>
             Profile
           </Link>
         </Menu.Item>
         <Menu.Item
-          key='5'
+          key='6'
           icon={<FontAwesomeIcon icon={faSignOutAlt} />}
           onClick={handleLogout}
         >

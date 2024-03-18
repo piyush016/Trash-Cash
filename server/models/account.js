@@ -19,6 +19,45 @@ const transactionSchema = new mongoose.Schema({
   },
 });
 
+const loanSchema = new mongoose.Schema({
+  amount: {
+    type: Number,
+    required: true,
+  },
+  timePeriod: {
+    type: Number,
+    required: true,
+  },
+  reason: {
+    type: String,
+    required: true,
+  },
+  rate: {
+    type: Number,
+    required: true,
+  },
+  totalInterest: {
+    type: Number,
+    required: true,
+  },
+  calculatedLoanAmount: {
+    type: Number,
+    required: true,
+  },
+  bankCharges: {
+    type: Number,
+    default: 100,
+  },
+  monthlyPayment: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const accountSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +69,7 @@ const accountSchema = new mongoose.Schema({
     required: true,
   },
   transactions: [transactionSchema],
+  loans: [loanSchema],
 });
 
 const Account = mongoose.model("Account", accountSchema);
