@@ -11,11 +11,14 @@ import {
 } from "antd";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { Meta } = Card;
 const { Title } = Typography;
 
 const Profile = () => {
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -27,7 +30,7 @@ const Profile = () => {
           `${process.env.API_URL}/user/profile`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${tokenAtom}`,
             },
           }
         );
@@ -57,7 +60,7 @@ const Profile = () => {
         profileData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );

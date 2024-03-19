@@ -12,6 +12,8 @@ import {
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import { message } from "antd";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +27,7 @@ ChartJS.register(
 
 const LineChart = ({ timeFrame, option }) => {
   const [chartData, setChartData] = useState(null);
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
 
   useEffect(() => {
     fetchData();
@@ -35,7 +38,7 @@ const LineChart = ({ timeFrame, option }) => {
       const response = await axios.get(`${process.env.API_URL}/chart/credeb`, {
         params: { timeFrame },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${tokenAtom}`,
         },
       });
 

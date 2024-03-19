@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Layout, notification, Spin } from "antd";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 import Heading from "../components/Heading";
 import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
@@ -13,6 +15,7 @@ const { Content } = Layout;
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -32,8 +35,7 @@ export default function SignUp() {
         message: `Hey ${firstName}`,
         description: "Welcome to Trash-Cash!",
       });
-
-      localStorage.setItem("token", response.data.token);
+      setTokenAtom(response.data.token);
       navigate("/dashboard");
     } catch (error) {
       notification.error({

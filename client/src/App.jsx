@@ -1,5 +1,6 @@
 import "./App.css";
 import { Layout } from "antd";
+import { RecoilRoot } from "recoil";
 import Nav from "./components/Nav";
 import SideNavigation from "./components/SideNavigation";
 import Foot from "./components/Foot";
@@ -10,20 +11,22 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <Router>
-      <Layout style={{ minHeight: "100vh" }}>
-        <Nav />
-        <Layout>
-          <SideNavigation />
+    <RecoilRoot>
+      <Router>
+        <Layout style={{ minHeight: "100vh" }}>
+          <Nav />
           <Layout>
-            <Content style={{ margin: 8, padding: 24 }}>
-              <AnimatedRoutes />
-            </Content>
+            <SideNavigation />
+            <Layout>
+              <Content style={{ margin: 8, padding: 24 }}>
+                <AnimatedRoutes />
+              </Content>
+            </Layout>
           </Layout>
+          <Foot />
         </Layout>
-        <Foot />
-      </Layout>
-    </Router>
+      </Router>
+    </RecoilRoot>
   );
 }
 

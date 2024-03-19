@@ -18,12 +18,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import SecurityModal from "../components/SecurityModal";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { Title, Paragraph } = Typography;
 
 const SendMoney = () => {
-  const apiURL = process.env.API_URL;
   const navigate = useNavigate();
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const firstName = searchParams.get("firstName");
@@ -41,15 +43,15 @@ const SendMoney = () => {
 
   const handleSuccessVerification = async () => {
     try {
-      const response = await axios.post(
-        `${apiURL}/account/transfer`,
+      await axios.post(
+        `${process.env.API_URL}/account/transfer`,
         {
           to: id,
           amount: parseInt(amount),
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );

@@ -9,21 +9,28 @@ import {
   faSignOutAlt,
   faLandmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { Sider } = Layout;
 
 const SideNavigation = () => {
   const navigate = useNavigate();
+  const token = useRecoilValue(tokenState);
+  const setTokenAtom = useSetRecoilState(tokenState);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
     navigate("/");
+    setTokenAtom("");
     notification.success({
       message: "Bye",
       description: "See you soon!",
     });
   };
 
+  if (!token) {
+    return null;
+  }
   return (
     <Sider collapsed={true} style={{ background: "#fff" }}>
       <div

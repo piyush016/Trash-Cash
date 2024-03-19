@@ -23,12 +23,15 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { Content } = Layout;
 const { Text } = Typography;
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [accountBalance, setAccountBalance] = useState(0);
   const [activeLoans, setActiveLoans] = useState([]);
   const [notifications, setNotifications] = useState([]);
@@ -47,7 +50,7 @@ const Dashboard = () => {
         `${process.env.API_URL}/user/search-user?filter=${value}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );
@@ -67,7 +70,7 @@ const Dashboard = () => {
         `${process.env.API_URL}/account/balance`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );
@@ -77,7 +80,7 @@ const Dashboard = () => {
         `${process.env.API_URL}/loan/active`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );

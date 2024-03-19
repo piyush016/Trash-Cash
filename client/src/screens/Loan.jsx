@@ -16,13 +16,15 @@ import {
 } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const Loan = () => {
   const navigate = useNavigate();
-
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [loanDetails, setLoanDetails] = useState({
     amount: 0,
     timePeriod: 1,
@@ -66,7 +68,7 @@ const Loan = () => {
         loanDetails,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );

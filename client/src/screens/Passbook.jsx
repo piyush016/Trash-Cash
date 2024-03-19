@@ -1,19 +1,15 @@
 import { useState, useEffect } from "react";
-import {
-  Table,
-  DatePicker,
-  Typography,
-  Divider,
-  notification,
-  Tag,
-} from "antd";
+import { Table, DatePicker, Typography, Divider, message, Tag } from "antd";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
 const Passbook = () => {
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [passbookData, setPassbookData] = useState([]);
   const [selectedDates, setSelectedDates] = useState([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -36,15 +32,13 @@ const Passbook = () => {
           {
             params,
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${tokenAtom}`,
             },
           }
         );
         setPassbookData(response.data.transactions);
       } catch (error) {
-        notification.error({
-          message: "Error fetching passbook data",
-        });
+        message.error("Error fetching passbook data!");
       }
     };
 

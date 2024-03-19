@@ -1,8 +1,11 @@
 import { useState, useRef } from "react";
 import { Modal, Input, Button, notification } from "antd";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { tokenState } from "../atoms/userState";
 
 const SecurityModal = ({ visible, onSuccess, onCancel }) => {
+  const [tokenAtom, setTokenAtom] = useRecoilState(tokenState);
   const [code, setCode] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
 
@@ -15,7 +18,7 @@ const SecurityModal = ({ visible, onSuccess, onCancel }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${tokenAtom}`,
           },
         }
       );
