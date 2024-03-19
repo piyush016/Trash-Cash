@@ -99,8 +99,6 @@ router.get("/active", authMiddleWare, async (req, res) => {
     const account = await Account.findOne({
       userId: req.userId,
     });
-    console.log(account);
-
     if (!account) {
       return res.status(404).json({ message: "User account not found" });
     }
@@ -110,7 +108,6 @@ router.get("/active", authMiddleWare, async (req, res) => {
 
     res.status(200).json(activeLoan);
   } catch (error) {
-    console.error("Error fetching active loans:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

@@ -30,7 +30,6 @@ export default function SignIn() {
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
       notification.error({
         message: "Sign In failed!",
         description: `${error.response.data.message}`,
