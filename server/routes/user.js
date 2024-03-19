@@ -31,7 +31,6 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // If user doesn't exist, create a new one
     const newUser = await User.create({
       username: req.body.username,
       password: req.body.password,
@@ -39,14 +38,12 @@ router.post("/signup", async (req, res) => {
       lastName: req.body.lastName,
     });
 
-    // Create an account for the new user
     const userId = newUser._id;
     await Account.create({
       userId,
       balance: 1 + Math.random() * 100000,
     });
 
-    // Generate JWT token
     const token = jwt.sign(
       {
         userId: newUser._id,
@@ -54,13 +51,11 @@ router.post("/signup", async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    // Send success response with token
     res.json({
       message: "User created successfully",
       token,
     });
   } catch (error) {
-    console.error("Error while signing up:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -90,7 +85,7 @@ router.post("/signin", async (req, res) => {
     });
     return;
   }
-  res.status(411).json({ message: "Error while logging in!" });
+  res.status(411).json({ message: "Wrong email or password!" });
 });
 
 const updateBody = zod.object({
@@ -132,7 +127,6 @@ router.get("/profile", authMiddleWare, async (req, res) => {
     if (user) {
       return res.status(200).json({
         ...user._doc,
-        password: undefined,
       });
     }
   } catch (err) {
@@ -141,7 +135,6 @@ router.get("/profile", authMiddleWare, async (req, res) => {
 });
 router.get("/search-user", authMiddleWare, async (req, res) => {
   const filter = req.query.filter || "";
-
   const users = await User.find({
     $or: [
       {
