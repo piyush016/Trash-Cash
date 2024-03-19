@@ -193,4 +193,17 @@ router.post("/security-check", authMiddleWare, async (req, res) => {
   }
 });
 
+router.get("/me", authMiddleWare, async (req, res) => {
+  const user = await User.findOne({
+    _id: req.userId,
+  });
+  if (!user) {
+    res.status(404).json({ error: "User not found" });
+  }
+  res.json({
+    name: user.firstName,
+    email: user.username,
+  });
+});
+
 module.exports = router;

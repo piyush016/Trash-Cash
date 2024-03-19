@@ -149,13 +149,20 @@ const Loan = () => {
                   placeholder='Select Loan Reason'
                   onChange={handleLoanTypeChange}
                   style={{ width: "100%" }}
-                >
-                  <Option value='personal'>Personal Loan</Option>
-                  <Option value='home'>Home Loan</Option>
-                  <Option value='car'>Car Loan</Option>
-                  <Option value='education'>Education Loan</Option>
-                  <Option value='business'>Business Loan</Option>
-                </Select>
+                  options={[
+                    { value: "personal", label: <span>Personal Loan</span> },
+                    { value: "home", label: <span>Home Loan</span> },
+                    {
+                      value: "car",
+                      label: <span>Car Loan</span>,
+                    },
+                    { value: "education", label: <span>Education Loan</span> },
+                    {
+                      value: "business",
+                      label: <span>Business Loan</span>,
+                    },
+                  ]}
+                />
               </Col>
               <Col span={24}>
                 <InputNumber

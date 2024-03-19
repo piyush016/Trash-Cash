@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Layout, notification, Spin } from "antd";
+import { Layout, message, notification, Spin } from "antd";
 import { motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { tokenState } from "../atoms/userState";
@@ -31,10 +31,7 @@ export default function SignUp() {
         lastName,
         password,
       });
-      notification.success({
-        message: `Hey ${firstName}`,
-        description: "Welcome to Trash-Cash!",
-      });
+      message.success(`Hey ${firstName} !`);
       setTokenAtom(response.data.token);
       navigate("/dashboard");
     } catch (error) {
@@ -110,6 +107,7 @@ export default function SignUp() {
             }}
           >
             <Spin
+              fullscreen={true}
               spinning={loading}
               tip='Please be patient, it may take some time...'
               size='large'

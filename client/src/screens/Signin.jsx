@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { notification, Layout, Spin } from "antd";
+import { Layout, Spin, message } from "antd";
 import { motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { tokenState } from "../atoms/userState";
@@ -27,18 +27,12 @@ const SignIn = () => {
         username,
         password,
       });
-      notification.success({
-        message: `Welcome back!`,
-        description: "Do some Trash-Cash!",
-      });
+      message.success(`Welcome back!`);
 
       setTokenAtom(response.data.token);
       navigate("/dashboard");
     } catch (error) {
-      notification.error({
-        message: "Sign In failed!",
-        description: `${error.response.data.message}`,
-      });
+      message.error("Sign In failed!", `${error.response.data.message}`);
     }
     setLoading(false);
   };
@@ -93,6 +87,7 @@ const SignIn = () => {
             }}
           >
             <Spin
+              fullscreen={true}
               spinning={loading}
               tip='Please be patient, it may take some time...'
               size='large'
