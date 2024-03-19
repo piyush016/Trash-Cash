@@ -26,31 +26,31 @@ const Features = () => {
             <Paragraph>Safe & Secure</Paragraph>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={8}>
+        <Col xs={12} lg={8}>
           <Card size='large' className='feature-card' hoverable>
             <ThunderboltOutlined />
             <Paragraph>Lightning Fast Transactions</Paragraph>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={8}>
+        <Col xs={12} lg={8}>
           <Card size='large' className='feature-card' hoverable>
             <DollarCircleOutlined />
             <Paragraph>Track Expenses</Paragraph>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={8}>
+        <Col xs={12} lg={8}>
           <Card size='large' className='feature-card' hoverable>
             <CustomerServiceOutlined />
             <Paragraph>Customer Support</Paragraph>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={8}>
+        <Col xs={12} lg={8}>
           <Card size='large' className='feature-card' hoverable>
             <MobileOutlined />
             <Paragraph>Easy to Use Application</Paragraph>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={8}>
+        <Col xs={12} lg={8}>
           <Card size='large' className='feature-card' hoverable>
             <ClockCircleOutlined />
             <Paragraph>24x7 Availability</Paragraph>
