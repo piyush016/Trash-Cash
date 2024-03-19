@@ -8,6 +8,7 @@ import {
   faUser,
   faSignOutAlt,
   faLandmark,
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tokenState } from "../atoms/userState";
@@ -72,8 +73,13 @@ const SideNavigation = () => {
             Profile
           </Link>
         </Menu.Item>
+        <Menu.Item key='6' icon={<FontAwesomeIcon icon={faHeadset} />}>
+          <Link to='/support' style={{ margin: "0 8px" }}>
+            Support
+          </Link>
+        </Menu.Item>
         <Menu.Item
-          key='6'
+          key=''
           icon={<FontAwesomeIcon icon={faSignOutAlt} />}
           onClick={handleLogout}
         >
