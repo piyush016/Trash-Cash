@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Layout, message, notification, Spin } from "antd";
+import { Layout, message, Spin } from "antd";
 import { motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { tokenState } from "../atoms/userState";
@@ -35,10 +35,7 @@ export default function SignUp() {
       setTokenAtom(response.data.token);
       navigate("/dashboard");
     } catch (error) {
-      notification.error({
-        message: "Sign Up failed!",
-        description: `${error.response.data.message}`,
-      });
+      message.error("Sign Up failed!", `${error.response.data.message}`);
     }
     setLoading(false);
   };
@@ -107,7 +104,6 @@ export default function SignUp() {
             }}
           >
             <Spin
-              fullscreen={true}
               spinning={loading}
               tip='Please be patient, it may take some time...'
               size='large'

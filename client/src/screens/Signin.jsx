@@ -32,7 +32,7 @@ const SignIn = () => {
       setTokenAtom(response.data.token);
       navigate("/dashboard");
     } catch (error) {
-      message.error("Sign In failed!", `${error.response.data.message}`);
+      message.error(`${error.response.data.message}`);
     }
     setLoading(false);
   };
@@ -87,7 +87,6 @@ const SignIn = () => {
             }}
           >
             <Spin
-              fullscreen={true}
               spinning={loading}
               tip='Please be patient, it may take some time...'
               size='large'
