@@ -14,6 +14,7 @@ import {
   Modal,
   message,
 } from "antd";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,7 +24,7 @@ const Loan = () => {
 
   const [loanDetails, setLoanDetails] = useState({
     amount: 0,
-    timePeriod: 0,
+    timePeriod: 1,
     reason: "",
     rate: 0,
     totalInterest: 0,
@@ -60,7 +61,7 @@ const Loan = () => {
   const onFinish = async () => {
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/account/loan`,
+        `${process.env.API_URL}/loan/apply`,
         loanDetails,
         {
           headers: {
@@ -72,7 +73,7 @@ const Loan = () => {
         setIsModalVisible(true);
         setTimeout(() => {
           navigate("/dashboard");
-        }, 3000);
+        }, 4000);
       } else {
         message.error(
           response.data.message ||
@@ -92,23 +93,23 @@ const Loan = () => {
     let reason;
     switch (value) {
       case "personal":
-        interestRate = 8;
+        interestRate = 10;
         reason = "Personal Loan";
         break;
       case "home":
-        interestRate = 6;
+        interestRate = 7;
         reason = "Home Loan";
         break;
       case "car":
-        interestRate = 7;
+        interestRate = 8;
         reason = "Car Loan";
         break;
       case "education":
-        interestRate = 5;
+        interestRate = 6;
         reason = "Education Loan";
         break;
       case "business":
-        interestRate = 9;
+        interestRate = 11;
         reason = "Business Loan";
         break;
       default:
@@ -203,6 +204,7 @@ const Loan = () => {
                 <p>
                   <strong>Total Interest:</strong> ₹{loanDetails?.totalInterest}
                 </p>
+
                 <p>
                   <strong>Bank Charges:</strong> ₹{loanDetails?.bankCharges}
                 </p>
@@ -221,20 +223,24 @@ const Loan = () => {
                   <strong>Monthly Payment:</strong> ₹
                   {loanDetails?.monthlyPayment}
                 </p>
+                <Divider />
               </Col>
             </Row>
           </Card>
         </Watermark>
       </Col>
       <Modal
-        title='Success'
-        visible={isModalVisible}
+        open={isModalVisible}
+        closable={false}
         footer={null}
         centered
         maskClosable={false}
-        onCancel={() => setIsModalVisible(false)}
       >
-        <p>Loan application submitted successfully! 🎉</p>
+        <div style={{ textAlign: "center" }}>
+          <CheckCircleOutlined style={{ fontSize: "48px", color: "green" }} />
+          <Title level={4}>Loan Approved!</Title>
+          <p>Loan application submitted successfully! 🎉</p>
+        </div>
       </Modal>
     </Row>
   );

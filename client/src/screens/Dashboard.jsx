@@ -29,7 +29,7 @@ const { Text } = Typography;
 const Dashboard = () => {
   const navigate = useNavigate();
   const [accountBalance, setAccountBalance] = useState(0);
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  const [activeLoans, setActiveLoans] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState([]);
@@ -72,22 +72,22 @@ const Dashboard = () => {
       );
       setAccountBalance(balanceResponse.data.balance);
 
-      const transactionsResponse = await axios.get(
-        `${process.env.API_URL}/account/transactions?date=today`,
+      const fetchActiveLoans = await axios.get(
+        `${process.env.API_URL}/loan/active`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      setRecentTransactions(transactionsResponse.data.transactions);
+      setActiveLoans(fetchActiveLoans.data);
 
       // const notificationsResponse = await axios.get(
       //   `${process.env.API_URL}/notifications`
       // );
       // setNotifications(notificationsResponse.data.notifications);
     } catch (error) {
-      message.error("Error fetching data:", error);
+      message.error("Error fetching data!");
     }
   };
 
@@ -111,8 +111,8 @@ const Dashboard = () => {
         <Col xs={24} sm={12} lg={8}>
           <Card>
             <Statistic
-              title='Recent Transactions'
-              value={recentTransactions ? recentTransactions.length : 0}
+              title='Active Loans'
+              value={activeLoans ? activeLoans.length : 0}
               prefix={<ClockCircleOutlined />}
             />
           </Card>
@@ -201,49 +201,62 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-
       <Divider />
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Card title='Recent Transactions'>
+          <Card title='Active Loans'>
             <Table
               bordered
               fixed
               pagination={false}
-              dataSource={recentTransactions}
+              dataSource={activeLoans}
               columns={[
+                {
+                  title: "Reason",
+                  dataIndex: "reason",
+                  key: "reason",
+                },
                 {
                   title: "Amount",
                   dataIndex: "amount",
                   key: "amount",
-                  render: (amount) => <span> &#8377;{amount}</span>,
+                  render: (amount) => <span>&#8377;{amount}</span>,
                 },
                 {
-                  title: "Credit/Debit",
-                  dataIndex: "isCredit",
-                  key: "type",
-                  render: (isCredit) => (
-                    <span>{isCredit ? "Credit" : "Debit"}</span>
+                  title: "Rate",
+                  dataIndex: "rate",
+                  key: "rate",
+                },
+                {
+                  title: "Time Period",
+                  dataIndex: "timePeriod",
+                  key: "timePeriod",
+                },
+                {
+                  title: (
+                    <>
+                      <span>Calculated Loan Amount</span>
+                      <br />
+                      <span>(Amount + Interest + Bank Charges)</span>
+                    </>
+                  ),
+                  dataIndex: "calculatedLoanAmount",
+                  key: "calculatedLoanAmount",
+                  render: (text, record) => (
+                    <span>
+                      &#8377;{record.amount} + &#8377;{record.totalInterest} +
+                      &#8377;{record.bankCharges} = &#8377;
+                      {record.calculatedLoanAmount}
+                    </span>
                   ),
                 },
+
                 {
-                  title: "Account Number",
-                  dataIndex: "otherPartyUserId",
-                  key: "receiverId",
-                  render: (otherPartyUserId) => <span>{otherPartyUserId}</span>,
-                },
-                {
-                  title: "Date",
-                  dataIndex: "date",
-                  key: "timeStamp",
-                  render: (date) => (
-                    <span>
-                      {new Date(date).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </span>
+                  title: "Monthly Payment",
+                  dataIndex: "monthlyPayment",
+                  key: "monthlyPayment",
+                  render: (monthlyPayment) => (
+                    <span>&#8377;{monthlyPayment}</span>
                   ),
                 },
               ]}
@@ -251,6 +264,7 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
+      <Divider />
     </Content>
   );
 };
