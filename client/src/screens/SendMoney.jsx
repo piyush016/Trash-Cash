@@ -56,14 +56,14 @@ const SendMoney = () => {
       setSuccessModalVisible(true);
       setTimeout(() => {
         navigate("/dashboard");
-      }, 5000);
+      }, 4000);
     } catch (error) {
       message.error("Error sending money");
       setModalVisible(false);
       setFailureModalVisible(true);
       setTimeout(() => {
         navigate("/dashboard");
-      }, 5000);
+      }, 4000);
     }
   };
 
@@ -120,6 +120,7 @@ const SendMoney = () => {
       <Modal
         open={successModalVisible}
         closable={false}
+        centered
         footer={null}
         onCancel={() => setSuccessModalVisible(false)}
       >
@@ -130,7 +131,7 @@ const SendMoney = () => {
         </div>
       </Modal>
       <Modal
-        visible={failureModalVisible}
+        open={failureModalVisible}
         closable={false}
         footer={null}
         onCancel={() => setFailureModalVisible(false)}

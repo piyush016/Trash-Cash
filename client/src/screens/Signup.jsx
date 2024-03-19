@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Layout, notification } from "antd";
+import { Layout, notification, Spin } from "antd";
 import Heading from "../components/Heading";
 import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
@@ -16,7 +16,6 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSignUp = async () => {
     setLoading(true);
@@ -36,10 +35,9 @@ export default function SignUp() {
       navigate("/dashboard");
     } catch (error) {
       notification.error({
-        message: "Sign Up Failed",
-        description: "Failed to sign up. Please try again later.",
+        message: "Sign Up failed!",
+        description: `${error.response.data.message}`,
       });
-      setError("Failed to sign up. Please try again later.");
     }
     setLoading(false);
   };
@@ -100,15 +98,15 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div className='pt-4'>
-              <Button
-                onClick={handleSignUp}
-                label={loading ? "Signing Up..." : "Sign Up"}
-                disabled={loading}
-              />
+            <div style={{ paddingTop: "5px" }}>
+              <Spin spinning={loading} tip='Signing Up...'>
+                <Button
+                  onClick={handleSignUp}
+                  label={loading ? "Signing Up..." : "Sign Up"}
+                  disabled={loading}
+                />
+              </Spin>
             </div>
-
-            {error && <p className='text-red-500'>{error}</p>}
 
             <BottomWarning
               label={"Already have an account?"}

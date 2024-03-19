@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { notification, Layout } from "antd";
+import { notification, Layout, Spin } from "antd";
 import Heading from "../components/Heading";
 import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
@@ -14,7 +14,6 @@ export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -31,11 +30,11 @@ export default function SignIn() {
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
     } catch (error) {
+      console.log(error);
       notification.error({
-        message: "Sign In Failed",
-        description: "Failed to sign in. Please try again later.",
+        message: "Sign In failed!",
+        description: `${error.response.data.message}`,
       });
-      setError("Failed to sign in. Please try again later.");
     }
     setLoading(false);
   };
@@ -82,14 +81,15 @@ export default function SignIn() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div style={{ paddingTop: "1rem" }}>
-              <Button
-                onClick={handleSignIn}
-                label={loading ? "Signing In..." : "Sign In"}
-                disabled={loading}
-              />
+            <div style={{ paddingTop: "5px" }}>
+              <Spin spinning={loading} tip='Signing In...'>
+                <Button
+                  onClick={handleSignIn}
+                  label={loading ? "Signing In..." : "Sign In"}
+                  disabled={loading}
+                />
+              </Spin>
             </div>
-            {error && <p style={{ color: "#f00" }}>{error}</p>}
             <BottomWarning
               label={"Don't have an account?"}
               buttonText={" Sign up"}
