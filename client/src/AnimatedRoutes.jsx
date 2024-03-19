@@ -10,6 +10,7 @@ import SendMoney from "./screens/SendMoney";
 import Profile from "./screens/Profile";
 import Expenses from "./screens/Expenses";
 import Loan from "./screens/Loan";
+import Support from "./screens/Support";
 import RequireAuth from "./RequireAuth";
 
 const AnimatedRoutes = () => {
@@ -65,6 +66,14 @@ const AnimatedRoutes = () => {
           element={
             <RequireAuth>
               <Loan />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/support'
+          element={
+            <RequireAuth>
+              <Support />
             </RequireAuth>
           }
         />
