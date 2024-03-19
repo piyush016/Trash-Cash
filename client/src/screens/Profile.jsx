@@ -10,6 +10,7 @@ import {
   Divider,
 } from "antd";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const { Meta } = Card;
 const { Title } = Typography;
@@ -68,7 +69,11 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+    >
       <Divider orientation='left'>
         <Title level={3} style={{ fontSize: "24px" }}>
           Profile
@@ -170,7 +175,7 @@ const Profile = () => {
           </Button>
         </Card>
       </div>
-    </>
+    </motion.div>
   );
 };
 

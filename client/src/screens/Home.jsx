@@ -3,10 +3,22 @@ import { Button, Row, Col, Divider } from "antd";
 import Hero from "../components/Hero";
 import Features from "../components/Features";
 import Review from "../components/Review";
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
-    <div>
+    <motion.div
+      initial={{
+        opacity: 0,
+        rotateX: -180,
+        rotateY: -180,
+        scale: 0,
+        x: 100,
+        y: 100,
+      }}
+      animate={{ opacity: 1, rotateX: 0, rotateY: 0, scale: 1, x: 0, y: 0 }}
+      exit={{ opacity: 0 }}
+    >
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <Features />
@@ -32,7 +44,7 @@ const Home = () => {
         </Col>
       </Row>
       <Review />
-    </div>
+    </motion.div>
   );
 };
 

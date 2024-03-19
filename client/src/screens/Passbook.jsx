@@ -8,6 +8,7 @@ import {
   Tag,
 } from "antd";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -99,7 +100,12 @@ const Passbook = () => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      style={{ textAlign: "center" }}
+    >
       <Divider orientation='left'>
         <Title level={3} style={{ fontSize: "24px" }}>
           Passbook
@@ -116,7 +122,7 @@ const Passbook = () => {
         onChange={handleTableChange}
         style={{ marginTop: 20 }}
       />
-    </div>
+    </motion.div>
   );
 };
 

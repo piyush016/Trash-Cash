@@ -15,6 +15,7 @@ import {
   message,
 } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -124,125 +125,141 @@ const Loan = () => {
   };
 
   return (
-    <Row gutter={[16, 16]}>
-      <Col xs={24} md={12}>
-        <Card style={{ height: "100%", padding: 16 }}>
-          <Title level={4} style={{ textAlign: "center", marginBottom: 16 }}>
-            Loan Application
-          </Title>
-          <Row gutter={[16, 16]}>
-            <Col span={24}>
-              <Select
-                placeholder='Select Loan Reason'
-                onChange={handleLoanTypeChange}
-                style={{ width: "100%" }}
-              >
-                <Option value='personal'>Personal Loan</Option>
-                <Option value='home'>Home Loan</Option>
-                <Option value='car'>Car Loan</Option>
-                <Option value='education'>Education Loan</Option>
-                <Option value='business'>Business Loan</Option>
-              </Select>
-            </Col>
-            <Col span={24}>
-              <InputNumber
-                placeholder='Loan Amount'
-                min={1}
-                max={100000}
-                onChange={(value) => handleFormChange({ amount: value || 0 })}
-                style={{ width: "100%" }}
-              />
-            </Col>
-            <Col span={24}>
-              <InputNumber
-                placeholder='Time Period (in months)'
-                min={1}
-                onChange={(value) =>
-                  handleFormChange({ timePeriod: value || 0 })
-                }
-                style={{ width: "100%" }}
-              />
-            </Col>
-            <Col span={24}>
-              <InputNumber
-                placeholder='Interest Rate (%)'
-                min={0}
-                disabled
-                value={loanDetails.rate}
-                style={{ width: "100%" }}
-              />
-            </Col>
-            <Col span={24}>
-              <Button
-                type='primary'
-                onClick={onFinish}
-                style={{ margin: "auto", display: "block" }}
-              >
-                Apply for Loan
-              </Button>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-      <Col xs={24} md={12}>
-        <Watermark content='Trash-Bank' lighter>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+    >
+      <Divider orientation='left'>
+        <Title level={3} style={{ fontSize: "24px" }}>
+          Apply Loan
+        </Title>
+      </Divider>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={12}>
           <Card style={{ height: "100%", padding: 16 }}>
             <Title level={4} style={{ textAlign: "center", marginBottom: 16 }}>
-              Receipt
+              Loan Application
             </Title>
             <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <p>
-                  <strong>Loan Amount:</strong> ₹{loanDetails?.amount}
-                </p>
-                <p>
-                  <strong>Rate Charged:</strong> {loanDetails?.rate}%
-                </p>
-                <p>
-                  <strong>Time Period:</strong> {loanDetails?.timePeriod} months
-                </p>
-                <p>
-                  <strong>Total Interest:</strong> ₹{loanDetails?.totalInterest}
-                </p>
-
-                <p>
-                  <strong>Bank Charges:</strong> ₹{loanDetails?.bankCharges}
-                </p>
-                <p>
-                  <strong>Reason:</strong> {loanDetails?.reason}
-                </p>
+              <Col span={24}>
+                <Select
+                  placeholder='Select Loan Reason'
+                  onChange={handleLoanTypeChange}
+                  style={{ width: "100%" }}
+                >
+                  <Option value='personal'>Personal Loan</Option>
+                  <Option value='home'>Home Loan</Option>
+                  <Option value='car'>Car Loan</Option>
+                  <Option value='education'>Education Loan</Option>
+                  <Option value='business'>Business Loan</Option>
+                </Select>
               </Col>
-              <Col span={12}>
-                <Divider />
-                <p>
-                  <strong>Total Amount:</strong> ₹
-                  {loanDetails?.calculatedLoanAmount}
-                </p>
-                <Divider />
-                <p>
-                  <strong>Monthly Payment:</strong> ₹
-                  {loanDetails?.monthlyPayment}
-                </p>
-                <Divider />
+              <Col span={24}>
+                <InputNumber
+                  placeholder='Loan Amount'
+                  min={1}
+                  max={100000}
+                  onChange={(value) => handleFormChange({ amount: value || 0 })}
+                  style={{ width: "100%" }}
+                />
+              </Col>
+              <Col span={24}>
+                <InputNumber
+                  placeholder='Time Period (in months)'
+                  min={1}
+                  onChange={(value) =>
+                    handleFormChange({ timePeriod: value || 0 })
+                  }
+                  style={{ width: "100%" }}
+                />
+              </Col>
+              <Col span={24}>
+                <InputNumber
+                  placeholder='Interest Rate (%)'
+                  min={0}
+                  disabled
+                  value={loanDetails.rate}
+                  style={{ width: "100%" }}
+                />
+              </Col>
+              <Col span={24}>
+                <Button
+                  type='primary'
+                  onClick={onFinish}
+                  style={{ margin: "auto", display: "block" }}
+                >
+                  Apply for Loan
+                </Button>
               </Col>
             </Row>
           </Card>
-        </Watermark>
-      </Col>
-      <Modal
-        open={isModalVisible}
-        closable={false}
-        footer={null}
-        centered
-        maskClosable={false}
-      >
-        <div style={{ textAlign: "center" }}>
-          <CheckCircleOutlined style={{ fontSize: "48px", color: "green" }} />
-          <Title level={4}>Loan Approved!</Title>
-          <p>Loan application submitted successfully! 🎉</p>
-        </div>
-      </Modal>
-    </Row>
+        </Col>
+        <Col xs={24} md={12}>
+          <Watermark content='Trash-Bank' lighter>
+            <Card style={{ height: "100%", padding: 16 }}>
+              <Title
+                level={4}
+                style={{ textAlign: "center", marginBottom: 16 }}
+              >
+                Receipt
+              </Title>
+              <Row gutter={[16, 16]}>
+                <Col span={12}>
+                  <p>
+                    <strong>Loan Amount:</strong> ₹{loanDetails?.amount}
+                  </p>
+                  <p>
+                    <strong>Rate Charged:</strong> {loanDetails?.rate}%
+                  </p>
+                  <p>
+                    <strong>Time Period:</strong> {loanDetails?.timePeriod}{" "}
+                    months
+                  </p>
+                  <p>
+                    <strong>Total Interest:</strong> ₹
+                    {loanDetails?.totalInterest}
+                  </p>
+
+                  <p>
+                    <strong>Bank Charges:</strong> ₹{loanDetails?.bankCharges}
+                  </p>
+                  <p>
+                    <strong>Reason:</strong> {loanDetails?.reason}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <Divider />
+                  <p>
+                    <strong>Total Amount:</strong> ₹
+                    {loanDetails?.calculatedLoanAmount}
+                  </p>
+                  <Divider />
+                  <p>
+                    <strong>Monthly Payment:</strong> ₹
+                    {loanDetails?.monthlyPayment}
+                  </p>
+                  <Divider />
+                </Col>
+              </Row>
+            </Card>
+          </Watermark>
+        </Col>
+        <Modal
+          open={isModalVisible}
+          closable={false}
+          footer={null}
+          centered
+          maskClosable={false}
+        >
+          <div style={{ textAlign: "center" }}>
+            <CheckCircleOutlined style={{ fontSize: "48px", color: "green" }} />
+            <Title level={4}>Loan Approved!</Title>
+            <p>Loan application submitted successfully! 🎉</p>
+          </div>
+        </Modal>
+      </Row>
+    </motion.div>
   );
 };
 

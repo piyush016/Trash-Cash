@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Select, Divider, Typography, Row, Col } from "antd";
 import BarGraph from "../components/BarGraph";
 import LineChart from "../components/LineChart";
+import { motion } from "framer-motion";
+
 const { Title } = Typography;
 
 const Expenses = () => {
@@ -22,7 +24,11 @@ const Expenses = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+    >
       <Divider orientation='left'>
         <Title level={3} style={{ fontSize: "24px" }}>
           Expenses
@@ -70,7 +76,7 @@ const Expenses = () => {
           <LineChart timeFrame={timeFrameLine} option={expenseFrame} />
         </Col>
       </Row>
-    </>
+    </motion.div>
   );
 };
 

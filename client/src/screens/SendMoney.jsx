@@ -17,6 +17,7 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import SecurityModal from "../components/SecurityModal";
+import { motion } from "framer-motion";
 
 const { Title, Paragraph } = Typography;
 
@@ -68,7 +69,11 @@ const SendMoney = () => {
   };
 
   return (
-    <div>
+    <motion.div
+      initial={{ y: "100vh" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100vh" }}
+    >
       <Divider orientation='left'>
         <Title level={3} style={{ fontSize: "24px" }}>
           Send Money
@@ -142,7 +147,7 @@ const SendMoney = () => {
           <Paragraph>Oops! Something went wrong. 😞</Paragraph>
         </div>
       </Modal>
-    </div>
+    </motion.div>
   );
 };
 
