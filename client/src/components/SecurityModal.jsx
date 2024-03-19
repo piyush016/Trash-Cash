@@ -47,7 +47,7 @@ const SecurityModal = ({ visible, onSuccess, onCancel }) => {
   return (
     <Modal
       title='Enter Secret Code'
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       footer={[
         <Button key='cancel' onClick={onCancel} danger>
