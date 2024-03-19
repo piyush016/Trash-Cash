@@ -95,7 +95,6 @@ router.post("/apply", authMiddleWare, async (req, res) => {
 
 router.get("/active", authMiddleWare, async (req, res) => {
   try {
-    // Find the user's account
     const account = await Account.findOne({
       userId: req.userId,
     });
@@ -103,7 +102,6 @@ router.get("/active", authMiddleWare, async (req, res) => {
       return res.status(404).json({ message: "User account not found" });
     }
 
-    // Get active loans from the user's account
     const activeLoan = account.loans;
 
     res.status(200).json(activeLoan);
