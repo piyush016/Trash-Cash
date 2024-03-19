@@ -111,6 +111,7 @@ const Passbook = () => {
         fixed
         dataSource={passbookData}
         columns={columns}
+        sticky={true}
         pagination={{ ...pagination, position: ["bottomCenter"] }}
         onChange={handleTableChange}
         style={{ marginTop: 20 }}
