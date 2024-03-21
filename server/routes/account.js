@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { authMiddleWare } = require("../middleware/auth");
 const { Account } = require("../models/account");
-
+const { getSession } = require("../config/sessionManager");
 const router = express.Router();
 
 router.get("/balance", authMiddleWare, async (req, res) => {
@@ -92,7 +92,6 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
   }
 
   const toAccount = await Account.findOne({ userId: to }).session(session);
-
   if (!toAccount) {
     await session.abortTransaction();
     return res.status(400).json({
@@ -132,6 +131,37 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
       },
     }
   ).session(session);
+
+  const socket = getSession(to);
+  if (socket) {
+    socket.emit(
+      "notification",
+      `Account has been credited with amount ₹${amount}.`
+    );
+    await Account.updateOne(
+      { userId: to },
+      {
+        $push: {
+          notifications: {
+            message: `Account has been credited with amount ₹${amount}.`,
+            createdAt: new Date(),
+          },
+        },
+      }
+    ).session(session);
+  } else {
+    await Account.updateOne(
+      { userId: to },
+      {
+        $push: {
+          notifications: {
+            message: `Account has been credited with amount ₹${amount}.`,
+            createdAt: new Date(),
+          },
+        },
+      }
+    ).session(session);
+  }
 
   await session.commitTransaction();
   res.json({

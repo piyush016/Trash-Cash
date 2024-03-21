@@ -6,6 +6,7 @@ import SideNavigation from "./components/SideNavigation";
 import Foot from "./components/Foot";
 import { BrowserRouter as Router } from "react-router-dom";
 import AnimatedRoutes from "./AnimatedRoutes";
+import Notification from "./components/Notification";
 
 const { Content } = Layout;
 
@@ -18,6 +19,7 @@ function App() {
           <Layout>
             <SideNavigation />
             <Layout>
+              <Notification />
               <Content style={{ margin: 8, padding: 24 }}>
                 <AnimatedRoutes />
               </Content>

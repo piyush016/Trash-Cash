@@ -43,7 +43,6 @@ const Support = () => {
           Authorization: `Bearer ${tokenAtom}`,
         },
       });
-      console.log(response);
       const templateParams = {
         from_name: `${response.data.name}`,
         from_id: `${response.data.email}`,
@@ -60,9 +59,8 @@ const Support = () => {
 
       message.success("Your message has been sent successfully!");
       setSending(false);
-      navigate("/dashboard"); // Redirect to /dashboard after successful sending
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Error sending email:", error);
       message.error("Failed to send email. Please try again later.");
       setSending(false);
     }

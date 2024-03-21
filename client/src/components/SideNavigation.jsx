@@ -1,4 +1,4 @@
-import { Layout, Menu, Avatar, notification } from "antd";
+import { Layout, Menu, Avatar, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tokenState } from "../atoms/userState";
+import socket from "../socket";
 
 const { Sider } = Layout;
 
@@ -21,12 +22,10 @@ const SideNavigation = () => {
   const setTokenAtom = useSetRecoilState(tokenState);
 
   const handleLogout = () => {
+    socket.disconnect();
     navigate("/");
     setTokenAtom("");
-    notification.success({
-      message: "Bye",
-      description: "See you soon!",
-    });
+    message.success("Bye! See you soon.");
   };
 
   if (!token) {

@@ -10,6 +10,7 @@ import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import BottomWarning from "../components/BottomWarning";
+import socket from "../socket";
 
 const { Content } = Layout;
 
@@ -30,6 +31,7 @@ const SignIn = () => {
       message.success(`Welcome back!`);
 
       setTokenAtom(response.data.token);
+      socket.emit("join-room", response.data._id);
       navigate("/dashboard");
     } catch (error) {
       message.error(`${error.response.data.message}`);

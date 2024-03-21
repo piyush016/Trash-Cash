@@ -8,7 +8,6 @@ import {
   Col,
   Divider,
   List,
-  Button,
   Input,
   Typography,
   Avatar,
@@ -86,10 +85,15 @@ const Dashboard = () => {
       );
       setActiveLoans(fetchActiveLoans.data);
 
-      // const notificationsResponse = await axios.get(
-      //   `${process.env.API_URL}/notifications`
-      // );
-      // setNotifications(notificationsResponse.data.notifications);
+      const notificationsResponse = await axios.get(
+        `${process.env.API_URL}/notification/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenAtom}`,
+          },
+        }
+      );
+      setNotifications(notificationsResponse.data.notifications);
     } catch (error) {
       message.error("Error fetching data!");
     }
@@ -193,22 +197,22 @@ const Dashboard = () => {
               </div>
             </Card>
           </Col>
-
           <Col span={12}>
-            <Card title='Notifications' style={{ height: "300px" }}>
-              <List
-                itemLayout='horizontal'
-                dataSource={notifications}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={item.title}
-                      description={item.description}
-                    />
-                    <Button type='link'>View</Button>
-                  </List.Item>
-                )}
-              />
+            <Card
+              title='Notifications'
+              style={{ height: "300px", overflowY: "scroll" }}
+            >
+              <div>
+                <List
+                  itemLayout='horizontal'
+                  dataSource={notifications}
+                  renderItem={(item, index) => (
+                    <List.Item>
+                      <List.Item.Meta description={item.message} />
+                    </List.Item>
+                  )}
+                />
+              </div>
             </Card>
           </Col>
         </Row>

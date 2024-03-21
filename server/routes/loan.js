@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { authMiddleWare } = require("../middleware/auth");
 const { Account } = require("../models/account");
+const { getSession } = require("../config/sessionManager");
 
 const router = express.Router();
 
@@ -75,6 +76,34 @@ router.post("/apply", authMiddleWare, async (req, res) => {
       { userId: req.userId },
       { $push: { loans: loan } }
     ).session(session);
+
+    const socket = getSession(req.userId);
+    if (socket) {
+      socket.emit("notification", `Loan approved of amount ₹${loan.amount}.`);
+      await Account.updateOne(
+        { userId: req.userId },
+        {
+          $push: {
+            notifications: {
+              message: `Loan approved of amount ₹${loan.amount}.`,
+              createdAt: new Date(),
+            },
+          },
+        }
+      ).session(session);
+    } else {
+      await Account.updateOne(
+        { userId: req.userId },
+        {
+          $push: {
+            notifications: {
+              message: `Loan approved of amount ₹${amount}.`,
+              createdAt: new Date(),
+            },
+          },
+        }
+      ).session(session);
+    }
 
     await session.commitTransaction();
     session.endSession();

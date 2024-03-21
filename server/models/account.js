@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const notificationSchema = mongoose.Schema({
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
 const transactionSchema = new mongoose.Schema({
   amount: {
     type: Number,
@@ -70,6 +75,7 @@ const accountSchema = new mongoose.Schema({
   },
   transactions: [transactionSchema],
   loans: [loanSchema],
+  notifications: [notificationSchema],
 });
 
 const Account = mongoose.model("Account", accountSchema);
