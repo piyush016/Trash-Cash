@@ -22,7 +22,7 @@ const SideNavigation = () => {
   const setTokenAtom = useSetRecoilState(tokenState);
 
   const handleLogout = () => {
-    socket.disconnect();
+    socket.disconnect(token);
     navigate("/");
     setTokenAtom("");
     message.success("Bye! See you soon.");

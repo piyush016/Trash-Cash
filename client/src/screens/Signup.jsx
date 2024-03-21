@@ -10,6 +10,7 @@ import SubHeading from "../components/SubHeading";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import BottomWarning from "../components/BottomWarning";
+import socket from "../socket";
 
 const { Content } = Layout;
 
@@ -33,6 +34,7 @@ export default function SignUp() {
       });
       message.success(`Hey ${firstName} !`);
       setTokenAtom(response.data.token);
+      socket.emit("join-room", response.data._id);
       navigate("/dashboard");
     } catch (error) {
       message.error("Sign Up failed!", `${error.response.data.message}`);
@@ -63,65 +65,65 @@ export default function SignUp() {
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <div style={{ padding: "12px" }}>
-          <Heading label={"Sign Up"} />
-          <SubHeading label={"Create a new account to get started."} />
+        <Spin
+          spinning={loading}
+          tip='Please be patient, it may take some time...'
+          size='large'
+        >
+          <div style={{ padding: "12px" }}>
+            <Heading label={"Sign Up"} />
+            <SubHeading label={"Create a new account to get started."} />
 
-          <InputBox
-            label={"First Name"}
-            type={"text"}
-            placeholder={"Enter your first name"}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <InputBox
-            label={"Last Name"}
-            type={"text"}
-            placeholder={"Enter your last name"}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <InputBox
-            label={"Username"}
-            type={"email"}
-            placeholder={"Enter your username"}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <InputBox
-            label={"Password"}
-            type={"password"}
-            placeholder={"Enter your password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "5px",
-            }}
-          >
-            <Spin
-              spinning={loading}
-              tip='Please be patient, it may take some time...'
-              size='large'
+            <InputBox
+              label={"First Name"}
+              type={"text"}
+              placeholder={"Enter your first name"}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <InputBox
+              label={"Last Name"}
+              type={"text"}
+              placeholder={"Enter your last name"}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <InputBox
+              label={"Username"}
+              type={"email"}
+              placeholder={"Enter your username"}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <InputBox
+              label={"Password"}
+              type={"password"}
+              placeholder={"Enter your password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingTop: "5px",
+              }}
             >
               <Button
                 onClick={handleSignUp}
                 label={loading ? "Signing Up..." : "Sign Up"}
                 disabled={loading}
               />
-            </Spin>
-          </div>
+            </div>
 
-          <BottomWarning
-            label={"Already have an account?"}
-            buttonText={"Sign in"}
-            to={"/signin"}
-          />
-        </div>
+            <BottomWarning
+              label={"Already have an account?"}
+              buttonText={"Sign in"}
+              to={"/signin"}
+            />
+          </div>
+        </Spin>
       </motion.div>
     </Content>
   );

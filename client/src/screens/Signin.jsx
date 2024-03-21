@@ -61,37 +61,37 @@ const SignIn = () => {
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <div style={{ padding: "12px" }}>
-          <Heading label='Sign In' />
-          <SubHeading label='Welcome back! Please sign in to your account.' />
-          <InputBox
-            label='Username'
-            type='text'
-            placeholder='Enter your username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-          <InputBox
-            label='Password'
-            type='password'
-            placeholder='Enter your password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ width: "100%", marginBottom: "1rem" }}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: "5px",
-            }}
-          >
-            <Spin
-              spinning={loading}
-              tip='Please be patient, it may take some time...'
-              size='large'
+        <Spin
+          spinning={loading}
+          tip='Please be patient, it may take some time...'
+          size='large'
+        >
+          <div style={{ padding: "12px" }}>
+            <Heading label='Sign In' />
+            <SubHeading label='Welcome back! Please sign in to your account.' />
+            <InputBox
+              label='Username'
+              type='text'
+              placeholder='Enter your username'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={{ width: "100%", marginBottom: "1rem" }}
+            />
+            <InputBox
+              label='Password'
+              type='password'
+              placeholder='Enter your password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ width: "100%", marginBottom: "1rem" }}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingTop: "5px",
+              }}
             >
               <Button
                 onClick={handleSignIn}
@@ -99,14 +99,14 @@ const SignIn = () => {
                 disabled={loading}
                 style={{ width: "100%", marginTop: "1rem" }}
               />
-            </Spin>
+            </div>
+            <BottomWarning
+              label="Don't have an account?"
+              buttonText=' Sign up'
+              to='/signup'
+            />
           </div>
-          <BottomWarning
-            label="Don't have an account?"
-            buttonText=' Sign up'
-            to='/signup'
-          />
-        </div>
+        </Spin>
       </motion.div>
     </Content>
   );

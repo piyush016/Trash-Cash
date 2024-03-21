@@ -13,7 +13,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://trash-cash.vercel.app/"],
+    origin: "*",
   },
 });
 
@@ -40,13 +40,17 @@ app.use("/chart", chartRouter);
 app.use("/loan", loanRouter);
 app.use("/notification", notificationRouter);
 
+let user;
 io.on("connection", (socket) => {
   socket.on("join-room", (userId) => {
+    user = userId;
     addSession(userId, socket);
     socket.join(userId);
+    console.log(`User ${userId} joined room`);
   });
   socket.on("disconnect", () => {
-    removeSession(userId);
+    console.log(`User ${user} disconnected`);
+    removeSession(user);
   });
 });
 
